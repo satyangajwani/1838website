@@ -1,0 +1,21 @@
+:root {
+  --ground: #1c0e0b;
+  --ink: #fff7e8;
+  --gold-primary: #ffe4ab;
+  --gold-light: #ebd5b3;
+  --gold-mid: #e9c693;
+  --gold-deep: #c5a265;
+  --gold-muted: #d7b982;
+  --error: #ffb4ab;
+  --ease-decelerate: cubic-bezier(.22, .61, .36, 1);
+  --rx-surface: #1a0d0a;
+  --rx-surface-raised: #261410;
+  --rx-surface-field: #130907;
+  --rx-text: #fff7e8;
+  --rx-muted: #d8c7aa;
+  --rx-line: rgba(233, 198, 147, .58);
+  --rx-line-strong: #e9c693;
+  --rx-focus: #ffe4ab;
+  --rx-error: #ffb4ab;
+  --rx-backdrop: rgba(11, 4, 3, .28);
+}

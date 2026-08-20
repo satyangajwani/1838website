@@ -1,0 +1,3 @@
+import { mkdir } from 'node:fs/promises'; import { spawnSync } from 'node:child_process';
+await mkdir('public/audio', { recursive: true });
+for (const [codec, path, extra] of [['libopus', 'public/audio/ambience.webm', ['-b:a', '48k']], ['aac', 'public/audio/ambience.m4a', ['-b:a', '64k']]]) { const result = spawnSync('ffmpeg', ['-y', '-f', 'lavfi', '-i', 'sine=frequency=73:sample_rate=48000', '-f', 'lavfi', '-i', 'anoisesrc=color=pink:sample_rate=48000', '-filter_complex', '[0:a]volume=.04[a];[1:a]volume=.006[b];[a][b]amix=inputs=2,afade=t=in:st=0:d=0.8,afade=t=out:st=11:d=1', '-t', '12', '-c:a', codec, ...extra, path], { stdio: 'ignore' }); if (result.status !== 0) throw new Error(`Audio encode failed: ${path}`); }

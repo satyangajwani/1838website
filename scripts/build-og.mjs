@@ -1,0 +1,3 @@
+import sharp from 'sharp';
+const copy = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="630" fill="#1c0e0b" fill-opacity=".55"/><text x="70" y="110" fill="#ffe4ab" font-family="serif" font-size="78">1838</text><text x="75" y="152" fill="#ffe4ab" font-family="sans-serif" font-size="18" letter-spacing="10">RESERVE</text><text x="70" y="550" fill="#ffe4ab" font-family="serif" font-size="38">For those who script India’s future.</text></svg>`;
+await sharp('reference/assets/reserve-og-img.jpg').resize(1200, 630, { fit: 'cover' }).composite([{ input: Buffer.from(copy) }]).png().toFile('public/og.png');

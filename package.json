@@ -1,0 +1,44 @@
+{
+  "name": "1838-reserve-teaser",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test e2e/a11y.spec.ts",
+    "encode:assets": "node scripts/encode-assets.mjs",
+    "build:poster": "node scripts/build-poster.mjs",
+    "generate:audio": "node scripts/generate-audio.mjs",
+    "build:og": "node scripts/build-og.mjs",
+    "subset:fonts": "node scripts/subset-fonts.mjs",
+    "size": "node scripts/check-size.mjs",
+    "lh": "lhci autorun",
+    "audit:assets": "node scripts/audit-assets.mjs"
+  },
+  "dependencies": {
+    "motion": "^12.23.24",
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/postcss": "^4.1.14",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.7.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "jsdom": "^27.0.0",
+    "sharp": "^0.34.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+.pnpm-store/
+.next/
+playwright-report/
+test-results/
+coverage/
+*.log
+.vercel
+
+# Large reference material kept on disk (Dropbox), not in git history
+reference/assets/witnesscreation.mp4

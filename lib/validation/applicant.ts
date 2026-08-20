@@ -1,0 +1,1 @@
+export function validateApplicant({ primaryMobile, alternateMobile }: { primaryMobile: string; alternateMobile: string }) { return { alternateMobile: primaryMobile === alternateMobile ? 'Alternate mobile cannot be same as primary mobile' : undefined }; }
