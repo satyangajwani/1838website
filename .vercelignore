@@ -1,0 +1,9 @@
+collaterals
+reference
+assets
+docs
+e2e
+test-results
+playwright-report
+node_modules
+.next

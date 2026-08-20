@@ -28,7 +28,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   --stage-pad: clamp(1.25rem, 3vw, 3.25rem);
   --object-width: min(64vw, 76rem);
   --object-left: 66%;
-  --object-bottom: 0;
+  --object-bottom: 0px;
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -193,6 +193,27 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   to { transform: scale(1.0045); }
 }
 
+.artwork-credit {
+  position: absolute;
+  z-index: 3;
+  left: var(--object-left);
+  bottom: calc(var(--object-bottom) + .55rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--gold-light);
+  font-size: clamp(.56rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .artwork-credit { bottom: calc(var(--object-bottom) + 7.05rem); }
+}
+
 .stage-copy {
   position: relative;
   z-index: 3;
@@ -214,9 +235,15 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   align-items: flex-start;
   margin: 0;
 }
-.toi-lockup { grid-column: 1; display: grid; justify-items: start; gap: .32rem; width: clamp(8rem, 15vw, 13.5rem); }
-.toi-lockup img { display: block; width: 100%; height: auto; }
-.toi-lockup span { color: var(--gold-light); font-size: clamp(.5rem, .7vw, .68rem); font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.toi-lockup { grid-column: 1; display: grid; justify-items: center; gap: .32rem; width: clamp(8rem, 15vw, 13.5rem); }
+.toi-lockup img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* White source art rendered in the brand gold (matches --gold-light / ICICI gold). */
+  filter: brightness(.94) sepia(.58) saturate(1.65) hue-rotate(-9deg);
+}
+.toi-lockup span { justify-self: center; text-align: center; color: var(--gold-light); font-size: clamp(.5rem, .7vw, .68rem); font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
 .reserve-wordmark {
   grid-column: 2;
   display: grid;
@@ -256,7 +283,9 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   letter-spacing: .055em;
 }
 .plaque p { margin: 0; }
-.plaque p + p { margin-top: .26rem; color: var(--gold-light); }
+.cta-stack { grid-column: 2; grid-row: 3; align-self: end; justify-self: center; display: grid; justify-items: center; gap: .55rem; }
+.cta-stack .interest-trigger { grid-area: auto; align-self: auto; justify-self: auto; }
+.cta-note { margin: 0; color: var(--gold-light); font-size: clamp(.56rem, .7vw, .74rem); letter-spacing: .12em; text-transform: uppercase; }
 .marks {
   grid-column: 3;
   grid-row: 3;
@@ -486,7 +515,24 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
       linear-gradient(to bottom, transparent 0, #000 13%, #000 100%),
       linear-gradient(to right, transparent 0, #000 7%, #000 91%, transparent 100%);
   }
-  .stage-copy {
+  .artwork-credit {
+  position: absolute;
+  z-index: 3;
+  left: var(--object-left);
+  bottom: calc(var(--object-bottom) + .55rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--gold-light);
+  font-size: clamp(.56rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage-copy {
     grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
     grid-template-rows: auto auto minmax(0, 1fr) auto auto;
     padding-top: 0;
@@ -514,9 +560,26 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
     --stage-pad: clamp(.65rem, 2.5vw, 1rem);
     --object-width: min(54vw, 92dvh);
     --object-left: 72%;
-    --object-bottom: 0;
+    --object-bottom: 0px;
   }
-  .stage-copy { grid-template-columns: 34% 1fr 31%; grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 1rem; padding-top: 0; }
+  .artwork-credit {
+  position: absolute;
+  z-index: 3;
+  left: var(--object-left);
+  bottom: calc(var(--object-bottom) + .55rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--gold-light);
+  font-size: clamp(.56rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage-copy { grid-template-columns: 34% 1fr 31%; grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 1rem; padding-top: 0; }
   .masthead { grid-column: 1 / -1; grid-row: 1; padding-bottom: 2.25rem; }
   .toi-lockup { width: clamp(6.75rem, 22vw, 9rem); gap: .18rem; }
   .toi-lockup span { font-size: .43rem; }
@@ -534,7 +597,24 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .stage {
     --object-width: min(92vw, 56dvh);
   }
-  .stage-copy { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+  .artwork-credit {
+  position: absolute;
+  z-index: 3;
+  left: var(--object-left);
+  bottom: calc(var(--object-bottom) + .55rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--gold-light);
+  font-size: clamp(.56rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage-copy { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
   .masthead { padding-bottom: .45rem; }
   .toi-lockup { width: 7.5rem; }
   .toi-lockup span { font-size: .45rem; letter-spacing: .1em; }
@@ -553,7 +633,24 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
     --object-left: 74%;
     --object-width: min(50vw, 80dvh);
   }
-  .stage-copy { grid-template-columns: 33% 1fr 30%; column-gap: .6rem; }
+  .artwork-credit {
+  position: absolute;
+  z-index: 3;
+  left: var(--object-left);
+  bottom: calc(var(--object-bottom) + .55rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--gold-light);
+  font-size: clamp(.56rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage-copy { grid-template-columns: 33% 1fr 30%; column-gap: .6rem; }
   .masthead { padding-bottom: 2rem; }
   .toi-lockup { width: 6.25rem; }
   .toi-lockup span { font-size: .38rem; letter-spacing: .08em; }

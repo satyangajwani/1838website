@@ -7,5 +7,5 @@ import { Stage } from '@/components/stage/stage';
 import { InterestSheet } from '@/components/interest/sheet';
 
 export default function Home() {
-  return <><a className="skip-link" href="#request-introduction">Skip to Request an Introduction</a><Stage><header className="stage-header"><Masthead /><Proposition /></header><Plaque /><Marks /><InterestSheet /></Stage><Grain /></>;
+  return <><a className="skip-link" href="#request-introduction">Skip to Request an Introduction</a><Stage><header className="stage-header"><Masthead /><Proposition /></header><p className="artwork-credit">Artwork by Krishen Khanna</p><Plaque /><Marks /><InterestSheet /></Stage><Grain /></>;
 }
