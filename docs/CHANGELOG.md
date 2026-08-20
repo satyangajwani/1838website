@@ -51,6 +51,11 @@ One build session, 2026-08-19 → 2026-08-20. Executed as a plan-first pipeline:
 - Light made legible: wider autonomous drift amplitudes, stronger room-glow and specular alphas, a recurring specular pass every 17 s after the ceremony (pausable, reduced-motion-safe), gyro permission moved to `pointerup` (Safari user-activation) with stronger tilt gain.
 - Desktop artwork credit re-anchored as an engraved nameplate on the gold stand bar — the print ad's own gesture.
 
+## Phase 8 — Chrome-free stage, raised composition, mobile pedestal light (2026-08-20)
+
+- Owner direction: the Controls button broke the UI. Removed the whole controls surface — popover, pause toggle, audio ambience (`components/audio/`, `lib/audio/`), and gyroscope steering. The stage keeps the autonomous drift plus pointer/touch steering only. `prefers-reduced-motion` is now the sole motion-suppression mechanism (a deliberate WCAG 2.2.2 trade-off, owner's call).
+- Card raised on both form factors (portrait `--object-bottom` 23dvh → 27dvh, desktop 0 → 1.5rem) and the portrait wall blackout softened so the stone pedestal actually reads on a phone.
+
 ## Verification state at session end
 
 79/80 browser scenarios green on Chromium + WebKit (1 skipped by design: WebKit lacks the LCP PerformanceObserver), 20 unit tests, ~266 KB critical JS against a 307 KB budget, axe-clean, asset register fully green. Remaining go-live items are business, not code: real backends, the DLT SMS template, and the private-office name.

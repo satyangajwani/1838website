@@ -28,7 +28,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   --stage-pad: clamp(1.25rem, 3vw, 3.25rem);
   --object-width: min(64vw, 76rem);
   --object-left: 66%;
-  --object-bottom: 0px;
+  --object-bottom: 1.5rem;
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -357,42 +357,6 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   transform: translateY(-160%);
 }
 .skip-link:focus { transform: translateY(0); }
-.stage-controls {
-  position: fixed;
-  z-index: 25;
-  top: calc(var(--stage-pad) + 3.4rem);
-  right: var(--stage-pad);
-  display: grid;
-  justify-items: end;
-  gap: .45rem;
-}
-.stage-controls-popover {
-  display: grid;
-  justify-items: end;
-  gap: .4rem;
-  padding: .45rem;
-  background: rgba(28, 14, 11, .82);
-  border: 1px solid rgba(215, 185, 130, .66);
-  border-radius: .42rem;
-  box-shadow: 0 .8rem 1.8rem rgba(4, 1, 0, .28);
-  backdrop-filter: blur(8px);
-}
-.audio-toggle,
-.visual-toggle,
-.stage-controls-trigger {
-  min-height: 2.25rem;
-  padding: .55rem .75rem;
-  color: var(--gold-primary);
-  background: rgba(28, 14, 11, .76);
-  border: 1px solid rgba(215, 185, 130, .66);
-  border-radius: 999px;
-  font: 700 .62rem/1 var(--font-montserrat);
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  backdrop-filter: blur(8px);
-}
-.visual-toggle:disabled { cursor: default; opacity: .72; }
-
 .interest-sheet {
   width: min(calc(100vw - 2rem), 42rem);
   max-width: none;
@@ -470,9 +434,6 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
    lifts this rule above the base `outline: none` field rule for every target. */
 .interest-sheet :is(button, input:not([type="hidden"]):not([type="image"]), select, a):focus,
 .interest-trigger:focus-visible,
-.audio-toggle:focus-visible,
-.visual-toggle:focus-visible,
-.stage-controls-trigger:focus-visible,
 .skip-link:focus-visible {
   outline: 2px solid var(--rx-focus);
   outline-color: var(--rx-focus);
@@ -516,12 +477,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
     --stage-pad: clamp(.85rem, 4vw, 1.4rem);
     --object-width: min(98vw, 78dvh);
     --object-left: 50%;
-    --object-bottom: clamp(8.5rem, 23dvh, 14.5rem);
+    --object-bottom: clamp(10rem, 27dvh, 17rem);
     padding-bottom: calc(var(--stage-pad) + env(safe-area-inset-bottom, 0px) + .3rem);
   }
   /* Card ink sits at 49.2% of its asset; nudge to true optical center. */
   .stage-card-stand img { transform: translateX(.8%); }
-  .stage-wall::after { background: linear-gradient(to bottom, transparent 31%, rgba(7, 2, 1, .28) 44%, rgba(3, 1, 0, .94) 70%, #030100 100%); }
+  .stage-wall::after { background: linear-gradient(to bottom, transparent 34%, rgba(7, 2, 1, .24) 50%, rgba(3, 1, 0, .72) 80%, rgba(3, 1, 0, .96) 100%); }
   .stage-pedestal {
     right: 2.5%;
     -webkit-mask-image:
@@ -567,9 +528,6 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .marks { grid-column: 1 / -1; grid-row: 5; justify-self: center; justify-items: center; margin-top: .5rem; font-size: .61rem; }
   .visa-mark { width: 3.35rem; }
   .interest-trigger { grid-column: 2 / 4; grid-row: 5; justify-self: end; padding: .82rem 1rem; font-size: .64rem; }
-  .stage-controls { top: calc(var(--stage-pad) + clamp(4.65rem, 17vw, 7.5rem)); right: var(--stage-pad); left: auto; gap: .26rem; justify-items: end; }
-  .stage-controls-popover { justify-items: end; padding: .3rem; background: rgba(18, 8, 6, .58); border-color: rgba(215, 185, 130, .42); box-shadow: 0 .5rem 1rem rgba(4, 1, 0, .18); }
-  .audio-toggle, .visual-toggle, .stage-controls-trigger { min-height: 1.85rem; padding: .42rem .56rem; border-color: rgba(215, 185, 130, .42); background: rgba(18, 8, 6, .5); font-size: .48rem; }
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
@@ -606,8 +564,6 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .interest-trigger { grid-column: 2; grid-row: 3; padding: .7rem .9rem; font-size: .58rem; }
   .marks { grid-column: 3; grid-row: 3; font-size: .55rem; }
   .visa-mark { width: 3rem; }
-  .stage-controls { top: calc(var(--stage-pad) + 4.5rem); right: var(--stage-pad); left: auto; justify-items: end; }
-  .stage-controls-popover { justify-items: end; }
 }
 
 @media (max-width: 360px) and (max-aspect-ratio: 4 / 5) {
@@ -676,7 +632,6 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .plaque { font-size: .5rem; line-height: 1.22; }
   .marks { font-size: .48rem; gap: .22rem; }
   .interest-trigger { min-height: 2.2rem; padding: .58rem .68rem; font-size: .5rem; }
-  .stage-controls { top: calc(var(--stage-pad) + 4.5rem); }
 }
 
 @media (max-width: 700px) {

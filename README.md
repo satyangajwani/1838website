@@ -10,7 +10,7 @@ The live site is a Times Black template with the content deleted. Every word bel
 
 ## What this build is
 
-- **Stage** — layered stills extracted at print resolution from the brand's own pedestal-mockup PSD (wall / pedestal / card-on-stand / specular), composited per the print ad, with the room dissolving to black around the object. A load ceremony completes inside 5 s; after it, an autonomous light path (two superimposed sine periods, 14 s/23 s) drives the room glow, specular sweep and card edge light so the page is alive with zero input. Pointer and gyro steer the light and decay back. Wall and card carry near-imperceptible breath cycles. All of it pausable (WCAG 2.2.2) and skipped under reduced motion.
+- **Stage** — layered stills extracted at print resolution from the brand's own pedestal-mockup PSD (wall / pedestal / card-on-stand / specular), composited per the print ad, with the room dissolving to black around the object. A load ceremony completes inside 5 s; after it, an autonomous light path (two superimposed sine periods, 14 s/23 s) drives the room glow, specular sweep and card edge light so the page is alive with zero input. Pointer/touch steers the light and decays back. Wall and card carry near-imperceptible breath cycles. All motion is skipped under reduced motion — the owner removed the on-stage pause control and audio ambience (2026-08-20), so `prefers-reduced-motion` is the sole WCAG 2.2.2 mechanism.
 - **Copy** — all real DOM text, in the brand faces (STIX Two Text display, Montserrat UI, both OFL, subset + self-hosted). Approved ad copy throughout: tagline without the period, *Card ownership by invitation only.*, footer naming **Visa Infinite Privilege · October 2026**, CTA in the brand's own verb: **Request an Introduction**. Fee and terms visible on the first screen (RBI advertising rules, effective Jan 2027, ban hidden fees).
 - **Flow** — native `<dialog>` sheet over the hero: mobile (+91, first-digit validation) → OTP (one real input painted as six slots, `one-time-code` autocomplete, paste-safe) → applicant details (real labels, unticked consent, blur validation) → a confirmation that reads as an artifact (reference number, private office, no queue/referral/share).
 - **Backend seam** — `lib/api/adapter.ts` is the only file that knows about the network. Mocks are stateless Route Handlers (Vercel functions share no memory) with server-side validation, a verify-token binding `submitInterest` to `verifyOtp`, reserved failure inputs, and a no-PII-in-logs rule.
@@ -63,5 +63,5 @@ Deploys: `vercel deploy --yes` (protected preview) · `vercel deploy --prod --ye
 
 ## Owner-run device checks
 
-- OTP paste and audio `interrupted`-state recovery on a physical iPhone.
+- OTP paste on a physical iPhone.
 - The "alive" read on the actual pitch devices — the autonomous light drift is the page's heartbeat; judge it moving, not from stills.
