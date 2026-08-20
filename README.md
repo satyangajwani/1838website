@@ -17,7 +17,8 @@
 
 ## Go-live blockers and handoff
 
-- **OQ2 / RED:** identify the Khanna artwork and secure marketing rights before any public deployment. This private-preview build must remain access-protected until then.
+- **OQ2: RESOLVED (2026-08-20).** Times confirmed the Khanna rights are in order; the asset register is cleared. The preview stays access-protected for a different reason — see below.
+- **Mocked backends are now the public-deploy blocker.** The details step collects PAN, DOB and income and the Route Handlers answer with synthetic data that goes nowhere. Do not expose this build publicly until the adapter points at real Times endpoints, or the flow is visibly marked as a demo.
 - **OQ3:** confirm the Visa tier/card-face lockup before final card art.
 - **OQ4:** secure a DLT SMS template for production OTP autofill.
 - **OQ6:** replace the placeholder private-office name and confirm the October 2026 statement.

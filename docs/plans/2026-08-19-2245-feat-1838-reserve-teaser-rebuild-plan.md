@@ -16,7 +16,7 @@ execution: code
 - **Means:** Rebuild the single locked screen as a lit, layered, pointer-responsive scene with real DOM copy and an opt-in sound layer, and move the express-interest flow in-page (KTD1, KTD6, KTD10).
 - **Authority:** Requirements (R-IDs) win on what the page must do. KTDs win on how. Visa Brand Standards and WCAG 2.2 AA are external authorities that override art direction where they conflict (KTD13, R6, R20).
 - **Execution profile:** Front-end craft build. Backends are mocked behind one adapter (KTD11). No Times infrastructure credentials are needed or used.
-- **Stop conditions:** Stop and ask only if the work would require shipping an uncleared Krishen Khanna reproduction to a publicly reachable deploy (OQ2). OQ1 and a failed R3F spike are not stop conditions: OQ1 falls back to layer reconstruction, and a spike that fails on Next 16.3 retries on pinned 16.2.x — failing both cuts U4 and the build ships poster-tier.
+- **Stop conditions:** OQ2 (Khanna rights) is resolved, so artwork no longer gates a public deploy; stop and ask before any publicly reachable deployment while the backends are still mocked, since the form collects PAN and DOB into nothing. OQ1 and a failed R3F spike are not stop conditions: OQ1 falls back to layer reconstruction, and a spike that fails on Next 16.3 retries on pinned 16.2.x — failing both cuts U4 and the build ships poster-tier.
 - **Tail ownership:** Standalone run. This plan owns through a deployed preview URL; it does not own production cutover.
 
 ---
@@ -116,7 +116,7 @@ The source PNGs are 8-bit palette images with `tRNS` alpha. A gold-on-black rend
 ### Open Questions
 
 - OQ1. **Blocking for the highest-fidelity hero.** Can ICICI/TIL supply the original card render — the source Blender/Octane project or a layered PSD/EXR at full bit depth? The shipped PNGs are 256-colour indexed and cannot be repaired. U1 proceeds on a reconstructed fallback if the answer is no; the WebGL tier (U4) removes the dependency entirely, which is a second argument for building it.
-- OQ2. **Blocking before any public deploy.** Which Krishen Khanna painting is on the card, who owns it, and what rights were licensed — physical card only, or marketing too? Khanna is alive; copyright runs past 2086 and there is no collecting society, so the licence can only come from the artist directly. Moral rights under s.57 of the Copyright Act cannot be assigned, and cropping, gold-tinting, perspective-warping and overlaying type on the work are exactly the acts s.57 reaches. Deferred for the internal pitch; blocking for launch.
+- OQ2. **RESOLVED 2026-08-20.** Times confirmed the Krishen Khanna rights are in order for this use. The artwork and its derivatives are cleared in `docs/asset-register.md`; the private-preview constraint no longer rests on artwork clearance. Two narrower points remain worth a one-line confirmation from the agency rather than a blocker: that the licence covers the *photograph* of the painting as well as the painting, and that the crop/gold-tint/perspective treatment was shown to the artist (s.57 moral rights are unassignable and survive a reproduction licence).
 - OQ3. Deferred. Which Visa tier is 1838 Reserve? Infinite and Signature carry different mandatory card-face lockups (R6).
 - OQ4. Deferred, but with lead time. Can the SMS aggregator get a DLT template approved carrying the `@1838reserve.com #<code>` suffix? Without it both iOS AutoFill and Android WebOTP are permanently unavailable. Not needed for the mock, needed before launch.
 - OQ5. Deferred. Has DEPwD notified the mandatory accessibility rules directed by the Supreme Court in *Rajive Raturi v. UoI* (8 Nov 2024)? Decides whether R20 is a statutory duty or a compliance-team expectation. Build to AA either way.
@@ -219,7 +219,7 @@ stateDiagram-v2
 
 ### Assumptions
 
-- The pitch is shown on a private preview URL, not a public domain. This is what makes OQ2 deferrable rather than blocking — a public deploy would need the Khanna licence first.
+- The pitch is shown on an access-protected preview. With OQ2 resolved this is no longer an artwork-rights constraint; it now rests solely on the backends being mocked, so no real expression of interest can be captured or answered.
 - The applicant field set recovered from the live bundle is the correct one. It is reproduced rather than redesigned, because changing what the bank collects is not this plan's call.
 - "Express Interest" survives as the CTA verb. It is already the right register; the plan protects it rather than improving it.
 - Traffic during the pitch phase is negligible, which is what makes Vercel-only hosting acceptable (KTD12) and the Cloudflare R2 asset-hosting deferral safe.
@@ -230,7 +230,7 @@ stateDiagram-v2
 | --- | --- | --- |
 | R3F 9.7 declares `react: ">=19 <19.3"`; Next 16.3.1 vendors a `19.3.0-canary` for the App Router | Install-time peer check passes, runtime resolves to the canary. Same class as a known Next 15 issue. No confirmed break on 16.3.1, but unverified | U1 spikes it in 20 minutes before any WebGL work is committed. Fallback: pin Next 16.2.x |
 | Source renders unavailable (OQ1) | The shipped PNGs are 256-colour indexed; banding cannot be removed | Reconstruct layers from `reserve-og-img.jpg` for the poster tier, and let the WebGL tier (U4) render the card from geometry so it needs no source render at all |
-| Khanna licence (OQ2) | Moral rights under s.57 cannot be assigned, and the design's crop / tint / warp are precisely the acts it reaches | Keep the artwork treatment reversible: the wall is one layer and the inlay is one texture, both swappable. Do not bake the artwork into composited assets |
+| Khanna treatment (OQ2 resolved) | Rights confirmed. Residual: moral rights under s.57 are unassignable, and the crop / tint / perspective treatment is the kind of act they reach | Treatment stays reversible — the wall is one layer and the card one crop, both swappable without a rebuild |
 | Decoded-frame memory on iOS | Decoded frames are RGBA8 regardless of source codec; iOS Safari's canvas ceiling is around 224–256 MB | Not applicable to the chosen design — KTD1 uses a handful of layers, not a frame sequence. Recorded so the sequence approach is not reintroduced casually |
 | `@pmndrs/detect-gpu`'s benchmark data stopped updating in Dec 2025 | Devices launched since fall through to `FALLBACK`, and its tier 2 lumps a Poco M4 Pro with a Redmi K50 | Treat detect-gpu as a coarse gate only. Stage 3 runtime measurement is what actually protects the experience |
 | Safari ignores `ascent-override`, `descent-override` and `line-gap-override` | Three of the four metric-override descriptors `next/font` emits are inert on iPhone, so the automatic CLS defence mostly is not there | Gate the reveal on `document.fonts.ready` (R15) rather than relying on fallback metrics; hand-place `size-adjust`, the one descriptor Safari honours |
