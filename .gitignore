@@ -9,3 +9,6 @@ coverage/
 
 # Large reference material kept on disk (Dropbox), not in git history
 reference/assets/witnesscreation.mp4
+
+# Brand collateral (1.5GB, lives in Dropbox, not in git history)
+collaterals/

@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test';
 
 export async function openInterest(page: Page) {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Express Interest', exact: true }).click();
+  await page.getByRole('button', { name: 'Request an Introduction', exact: true }).click();
   await expect(page.locator('dialog.interest-sheet')).toBeVisible();
 }
 

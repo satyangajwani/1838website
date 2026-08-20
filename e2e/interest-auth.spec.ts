@@ -6,8 +6,8 @@ test('opening focuses the phone field with a gold ring and closing restores the 
   const phone = page.getByLabel('Aadhaar linked number');
   await expect(phone).toBeFocused();
   await expect(phone).toHaveCSS('outline-color', 'rgb(255, 228, 171)');
-  await page.getByRole('button', { name: 'Close express interest' }).click();
-  await expect(page.getByRole('button', { name: 'Express Interest', exact: true })).toBeFocused();
+  await page.getByRole('button', { name: 'Close request an introduction' }).click();
+  await expect(page.getByRole('button', { name: 'Request an Introduction', exact: true })).toBeFocused();
 });
 
 test('Escape closes from mobile, OTP and details', async ({ page }) => {
@@ -15,14 +15,14 @@ test('Escape closes from mobile, OTP and details', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(page.locator('dialog.interest-sheet')).not.toBeVisible();
 
-  await page.getByRole('button', { name: 'Express Interest', exact: true }).click();
+  await page.getByRole('button', { name: 'Request an Introduction', exact: true }).click();
   await page.getByLabel('Aadhaar linked number').fill('9876543210');
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.getByRole('heading', { name: 'Confirm your number' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.locator('dialog.interest-sheet')).not.toBeVisible();
 
-  await page.getByRole('button', { name: 'Express Interest', exact: true }).click();
+  await page.getByRole('button', { name: 'Request an Introduction', exact: true }).click();
   await pasteOtp(page, '183838');
   await expect(page.getByRole('heading', { name: 'A few particulars' })).toBeVisible();
   await page.keyboard.press('Escape');

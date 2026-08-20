@@ -28,23 +28,25 @@ test('a server-rendered stage image is the LCP element in Chromium', async ({ pa
   await expect.poll(() => page.evaluate(() => (window as LcpWindow).__reserveLcp)).toBe('stage-image');
 });
 
-test('the stage contains a clean card crop and no plinth fragments', async ({ page }) => {
+test('the stage layers the supplied no-name card and supplied pedestal without CSS stand effects', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('Artwork by Krishen Khanna', { exact: true })).toHaveCount(1);
-  await expect(page.getByText('Joining Fee ₹1,75,000 + GST', { exact: false })).toHaveCount(1);
+  await expect(page.getByText('The 1838 Reserve Credit Card · Visa Infinite Privilege · October 2026', { exact: true })).toHaveCount(1);
+  await expect(page.getByText('Card ownership by invitation only.', { exact: true })).toHaveCount(1);
+  await expect(page.getByAltText('The Times of India')).toHaveCount(1);
+  await expect(page.getByAltText('ICICI Bank')).toHaveCount(1);
   await expect(page.getByAltText('Visa')).toHaveCount(1);
-  await expect(page.locator('img[src*="cardpedestaltext"], img[src*="card-stand-9c28"], img[src*="wall-8d3a"]')).toHaveCount(0);
+  await expect(page.locator('img[src*="cardpedestaltext"], img[src*="card-clean-4fd2"]')).toHaveCount(0);
 
   const crops = await page.locator('[data-layer="card-stand"] img').evaluateAll((images) => images.map((node) => {
     const image = node as HTMLImageElement;
     return { marker: image.dataset.bakedCopy, width: image.naturalWidth, height: image.naturalHeight, src: image.currentSrc };
   }));
-  expect(crops).toEqual([
-    expect.objectContaining({ marker: 'excluded', width: 1598, height: 823 }),
-  ]);
-  expect(crops.every(({ src }) => /card-clean-4fd2/.test(src))).toBe(true);
-  await expect(page.locator('[data-layer="plinth"], .stage-plinth, img[src*="plinth"]')).toHaveCount(0);
-  await expect(page.locator('.stage-stand, .stage-contact-shadow, .stage-reflection')).toHaveCount(3);
+  expect(crops).toEqual([expect.objectContaining({ marker: 'excluded' })]);
+  expect(crops[0].width).toBeGreaterThan(0);
+  expect(crops[0].height).toBeGreaterThan(0);
+  expect(crops.every(({ src }) => /card-on-stand-noname/.test(src))).toBe(true);
+  await expect(page.locator('[data-layer="pedestal"] img[src*="pedestal-only"]')).toHaveCount(1);
+  await expect(page.locator('.stage-stand, .stage-contact-shadow, .stage-reflection')).toHaveCount(0);
 });
 
 test('pointer movement gives every physical layer a distinct depth and moves the card least', async ({ page }) => {
@@ -54,11 +56,12 @@ test('pointer movement gives every physical layer a distinct depth and moves the
   expect(box).not.toBeNull();
   await page.mouse.move(box!.x + box!.width * .92, box!.y + box!.height * .12);
 
-  const transforms = await page.locator('[data-layer="wall"], [data-layer="card-stand"], [data-layer="specular"]').evaluateAll((layers) => layers.map((layer) => ({
+  const transforms = await page.locator('[data-layer="wall"], [data-layer="pedestal"], [data-layer="card-stand"], [data-layer="specular"]').evaluateAll((layers) => layers.map((layer) => ({
     name: (layer as HTMLElement).dataset.layer,
     transform: (layer as HTMLElement).style.transform,
   })));
-  expect(new Set(transforms.map(({ transform }) => transform)).size).toBe(3);
+  // wall .09, pedestal .055, specular .045, card .035 — four distinct depths
+  expect(new Set(transforms.map(({ transform }) => transform)).size).toBe(4);
   const displacement = (value: string) => Math.hypot(...(value.match(/-?\d+(?:\.\d+)?/g) ?? []).slice(0, 2).map(Number));
   const wall = transforms.find(({ name }) => name === 'wall')!;
   const card = transforms.find(({ name }) => name === 'card-stand')!;
@@ -128,16 +131,16 @@ for (const viewport of [
     const proposition = await page.getByRole('heading', { level: 1 }).boundingBox();
     const card = await page.locator('[data-layer="card-stand"]').boundingBox();
     const object = await page.locator('[data-stage-object]').boundingBox();
-    const shadow = await page.locator('.stage-contact-shadow').boundingBox();
-    const reflection = await page.locator('.stage-reflection').boundingBox();
-    const terms = await page.getByRole('link', { name: 'Terms apply' }).boundingBox();
-    const cta = await page.getByRole('button', { name: 'Express Interest', exact: true }).boundingBox();
+    const pedestal = await page.locator('[data-layer="pedestal"]').boundingBox();
+    const footer = await page.getByText('Card ownership by invitation only.', { exact: true }).boundingBox();
+    const cta = await page.getByRole('button', { name: 'Request an Introduction', exact: true }).boundingBox();
     const masthead = await page.locator('.masthead').boundingBox();
+    const toi = await page.getByAltText('The Times of India').boundingBox();
     const controls = await page.locator('.stage-controls').boundingBox();
-    expect(proposition && card && object && shadow && reflection && terms && cta && masthead && controls).toBeTruthy();
+    expect(proposition && card && object && pedestal && footer && cta && masthead && toi && controls).toBeTruthy();
     expect(intersects(proposition!, card!)).toBe(false);
-    expect(intersects(masthead!, controls!)).toBe(false);
-    for (const box of [object!, shadow!, reflection!, terms!, cta!, controls!]) {
+    if (viewport.width <= 768 || viewport.height <= 600) expect(controls!.y).toBeGreaterThanOrEqual(toi!.y + toi!.height - 1);
+    for (const box of [object!, pedestal!, footer!, cta!, controls!]) {
       expect(box.x).toBeGreaterThanOrEqual(-1);
       expect(box.y).toBeGreaterThanOrEqual(-1);
       expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1);
@@ -147,6 +150,23 @@ for (const viewport of [
     await expect(page.locator('[data-device-landscape], [class*="rotate" i], img[src*="orientation"]')).toHaveCount(0);
   });
 }
+
+test('portrait footer product line stays below the card layer at 320, 390 and 768 widths', async ({ page }) => {
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+  ]) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('/');
+    const productLine = await page.getByText('The 1838 Reserve Credit Card · Visa Infinite Privilege · October 2026', { exact: true }).boundingBox();
+    const card = await page.locator('[data-layer="card-stand"]').boundingBox();
+
+    expect(productLine && card).toBeTruthy();
+    expect(intersects(productLine!, card!)).toBe(false);
+    expect(productLine!.y).toBeGreaterThanOrEqual(card!.y + card!.height);
+  }
+});
 
 test('the Visa mark is white, fully opaque and outside filtered ancestors', async ({ page, request }) => {
   await page.goto('/');
@@ -178,14 +198,14 @@ test('reduced motion keeps every layer static on pointer movement', async ({ pag
   await expect(page.getByRole('button', { name: 'Visual ambience paused for reduced motion' })).toBeDisabled();
 });
 
-test('the proposition uses Bodoni as display type with tight leading', async ({ page }) => {
+test('the proposition uses STIX Two Text as display type with tight leading', async ({ page }) => {
   await page.goto('/');
   const proposition = page.getByRole('heading', { level: 1 });
   const type = await proposition.evaluate((node) => {
     const style = getComputedStyle(node);
     return { family: style.fontFamily, size: parseFloat(style.fontSize), leading: parseFloat(style.lineHeight) };
   });
-  expect(type.family.toLowerCase()).toContain('bodoni');
+  expect(type.family.toLowerCase()).toContain('stix');
   expect(type.size).toBeGreaterThan(32);
   expect(type.leading / type.size).toBeLessThanOrEqual(.96);
 });

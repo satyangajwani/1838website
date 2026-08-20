@@ -54,9 +54,9 @@ export function InterestSheet() {
   }, []);
 
   return <LazyMotion features={domAnimation} strict>
-    <button ref={trigger} id="express-interest" className="interest-trigger" onClick={open}>Express Interest</button>
+    <button ref={trigger} id="request-introduction" className="interest-trigger" onClick={open}>Request an Introduction</button>
     <dialog ref={dialog} className="interest-sheet" aria-labelledby="interest-title" aria-modal="true" data-interest-step={step} onClose={() => trigger.current?.focus()}>
-      <button type="button" className="dialog-close" aria-label="Close express interest" onClick={close}>×</button>
+      <button type="button" className="dialog-close" aria-label="Close request an introduction" onClick={close}>×</button>
       {step === 'mobile' && <StepMobile phone={phone} setPhone={setPhone} onSent={() => setStep('otp')} />}
       {step === 'otp' && <StepOtp phone={phone} onChangeNumber={() => setStep('mobile')} onVerified={(verified) => { setToken(verified); setStep('details'); }} />}
       {step === 'details' && <StepDetails phone={phone} token={token} onConfirmed={(value) => { setReference(value); setStep('confirmed'); }} />}

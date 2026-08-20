@@ -16,24 +16,20 @@ describe('Stage', () => {
     }));
   }
 
-  it('keeps copy in the DOM and renders a grounded card without a plinth layer', () => {
+  it('keeps copy in the DOM and layers the supplied card over the supplied pedestal', () => {
     setReducedMotion(false);
     vi.stubGlobal('requestAnimationFrame', vi.fn().mockReturnValue(1));
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
-    const { container } = render(<Stage><h1>For those who script India’s future.</h1><p>Joining Fee ₹1,75,000 + GST</p><p>Artwork by Krishen Khanna</p><p>Issued by ICICI Bank</p></Stage>);
+    const { container } = render(<Stage><h1>For those who script India’s future</h1><p>The 1838 Reserve Credit Card · Visa Infinite Privilege · October 2026</p><p>Card ownership by invitation only.</p></Stage>);
     const stage = container.querySelector<HTMLElement>('[data-stage]')!;
     const wall = container.querySelector<HTMLElement>('[data-layer="wall"]');
     const cardStand = container.querySelector<HTMLElement>('[data-layer="card-stand"]');
-    const stand = container.querySelector<HTMLElement>('.stage-stand');
-    const shadow = container.querySelector<HTMLElement>('.stage-contact-shadow');
-    const reflection = container.querySelector<HTMLElement>('.stage-reflection');
+    const pedestal = container.querySelector<HTMLElement>('[data-layer="pedestal"]');
 
     expect(wall).toBeInTheDocument();
     expect(cardStand).toBeInTheDocument();
-    expect(stand).toBeInTheDocument();
-    expect(shadow).toBeInTheDocument();
-    expect(reflection).toBeInTheDocument();
-    expect(container.querySelector('[data-layer="plinth"]')).not.toBeInTheDocument();
+    expect(pedestal).toBeInTheDocument();
+    expect(container.querySelector('.stage-stand, .stage-contact-shadow, .stage-reflection')).not.toBeInTheDocument();
     expect(wall?.querySelector('img')).toHaveAttribute('data-lcp-stage-image');
     expect(cardStand?.querySelector('img')).toHaveAttribute('data-lcp-stage-image');
     expect(cardStand?.querySelector('img')).toHaveAttribute('data-baked-copy', 'excluded');
@@ -42,7 +38,9 @@ describe('Stage', () => {
     fireEvent.pointerMove(stage, { clientX: 900, clientY: 100 });
     const layers = [...container.querySelectorAll<HTMLElement>('[data-depth]')];
     expect(container.querySelector('.stage-card-edge-light')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading')).toHaveTextContent('For those who script India’s future.');
+    expect(cardStand?.querySelector('img')).toHaveAttribute('src', '/stage/card-on-stand-noname-1440.webp');
+    expect(pedestal?.querySelector('img')).toHaveAttribute('src', '/stage/pedestal-only-1440.webp');
+    expect(screen.getByRole('heading')).toHaveTextContent('For those who script India’s future');
     expect(new Set(layers.map((layer) => layer.style.transform)).size).toBeGreaterThan(1);
   });
 

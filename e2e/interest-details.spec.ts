@@ -39,7 +39,8 @@ test('a valid submission renders the artifact reference without share, referral 
   await expect(page.getByRole('heading', { name: 'Interest recorded' })).toBeVisible();
   await expect(page.locator('output.reference')).toHaveText(/^1838-[A-Z0-9]{8}$/);
   await expect(page.getByText('1838 Reserve Private Office', { exact: true })).toBeVisible();
-  await expect(page.getByText(/October 2026/)).toBeVisible();
+  // Scoped to the sheet: the stage footer also names October 2026.
+  await expect(page.locator('dialog.interest-sheet').getByText(/October 2026/)).toBeVisible();
   await expect(page.getByRole('link', { name: /share|refer|queue/i })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /share|refer|queue/i })).toHaveCount(0);
   await expect(page.getByText(/queue position|referral|share (?:this|your)/i)).toHaveCount(0);
