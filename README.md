@@ -1,55 +1,67 @@
-# 1838 Reserve teaser
+# 1838 Reserve — invite teaser rebuild
 
-## Current implementation notes
+A ground-up rebuild of [1838reserve.com](https://www.1838reserve.com/) — the invite page for the 1838 Reserve credit card (The Times of India × ICICI Bank × Visa Infinite Privilege, ₹1,75,000 + GST, launching October 2026). Single locked screen, one call to action, an in-page express-interest flow against mocked backends. Built as a pitch-grade concept: the argument is won on feel, and a Times engineer can wire the real backends through one adapter file.
 
-- **U4 (real-time WebGL card tier) is CUT.** The plan sanctioned this cut. As built, the scene rendered an untextured `RoundedBox` with a flat gold colour and no card artwork, chip, engraving or normal map, and `.stage:has(.card-scene) .stage-object { opacity: 0 }` hid the poster behind it — so on a real device the page showed the correct card, swapped to a featureless gold slab, then reverted when `PerformanceMonitor` hit its fallback. It was a straight regression against the poster tier.
-- **Why it was cut rather than textured:** the only card imagery available is a finished product *render* with lighting already baked in. Using it as an albedo map on a PBR metal double-lights the surface and reads worse than the render itself. A genuine real-time upgrade needs the original 3D source (OQ1), which the client has not supplied. Revisit U4 only when OQ1 resolves; the poster tier already carries the live pointer/tilt light response and parallax.
-- Removed with the cut: `components/stage/card-scene.tsx`, `card-scene-loader.tsx`, `lib/tier/`, `e2e/tier.spec.ts`, `public/benchmarks/`, `public/env/`, and the `three` / `@react-three/*` / `@pmndrs/detect-gpu` dependencies.
-- **Current stage composition:** the poster tier layers the supplied no-name card-on-stand and the supplied pedestal as real image assets over the wall. It does not use CSS-built stand, contact-shadow, or reflection effects.
-- The stage uses responsive AVIF/WebP derivatives for the card and pedestal. Header, tagline, footer, CTA, and marks remain live DOM content; no product copy is baked into the layered scene assets.
-- The responsive asset encoder uses SVT-AV1 10-bit AVIF as required. This machine's ffmpeg does not include `libwebp`, so its WebP fallback uses `sharp`; this is recorded in the asset register.
-- Vercel headers and image settings are in place. The owner must configure Vercel Deployment Protection and issue protected share links; this run intentionally performed no Vercel login or deployment.
+The approved launch print ad (`collaterals/print-ad/`) is the art-direction ground truth. The site is that ad, alive: the Krishen Khanna *Bandwallas* room, the card on its pedestal in a pool of light that drifts on its own, brand typography, and the interest flow layered over the hero so the card never leaves frame.
 
-## Owner-owned checkpoints
+## Why the rebuild exists
 
-- After U3: compare the poster tier with the live site on the pitch devices, including a mid-tier Android, and record the alive-read go/no-go. If it fails, assess KTD1's video-loop fallback.
-- Verify OTP paste and audio interruption recovery on physical iPhone. (Thermal tier fallback no longer applies — U4 is cut.)
+The live site is a Times Black template with the content deleted. Every word below the `<title>` — tagline, fee, artist credit, Visa mark — is baked into one 1998×2496 palette PNG: nothing selectable, translatable, or indexable, with 1 MB of LCP spent rendering type. Its structured data still describes Times Black, publishing a **₹20,000** joining fee into search results for a ₹1.75-lakh card, and its gold Visa mark violates Visa's white-on-dark rule. The card — whose only job is to look worth the fee — never moves.
 
-## Go-live blockers and handoff
+## What this build is
 
-- **OQ2: RESOLVED (2026-08-20).** Times confirmed the Khanna rights are in order; the asset register is cleared. The preview stays access-protected for a different reason — see below.
-- **Mocked backends are now the public-deploy blocker.** The details step collects PAN, DOB and income and the Route Handlers answer with synthetic data that goes nowhere. Do not expose this build publicly until the adapter points at real Times endpoints, or the flow is visibly marked as a demo.
-- **OQ3:** confirm the Visa tier/card-face lockup before final card art.
-- **OQ4:** secure a DLT SMS template for production OTP autofill.
-- **OQ6:** replace the placeholder private-office name and confirm the October 2026 statement.
+- **Stage** — layered stills extracted at print resolution from the brand's own pedestal-mockup PSD (wall / pedestal / card-on-stand / specular), composited per the print ad, with the room dissolving to black around the object. A load ceremony completes inside 5 s; after it, an autonomous light path (two superimposed sine periods, 14 s/23 s) drives the room glow, specular sweep and card edge light so the page is alive with zero input. Pointer and gyro steer the light and decay back. Wall and card carry near-imperceptible breath cycles. All of it pausable (WCAG 2.2.2) and skipped under reduced motion.
+- **Copy** — all real DOM text, in the brand faces (STIX Two Text display, Montserrat UI, both OFL, subset + self-hosted). Approved ad copy throughout: tagline without the period, *Card ownership by invitation only.*, footer naming **Visa Infinite Privilege · October 2026**, CTA in the brand's own verb: **Request an Introduction**. Fee and terms visible on the first screen (RBI advertising rules, effective Jan 2027, ban hidden fees).
+- **Flow** — native `<dialog>` sheet over the hero: mobile (+91, first-digit validation) → OTP (one real input painted as six slots, `one-time-code` autocomplete, paste-safe) → applicant details (real labels, unticked consent, blur validation) → a confirmation that reads as an artifact (reference number, private office, no queue/referral/share).
+- **Backend seam** — `lib/api/adapter.ts` is the only file that knows about the network. Mocks are stateless Route Handlers (Vercel functions share no memory) with server-side validation, a verify-token binding `submitInterest` to `verifyOtp`, reserved failure inputs, and a no-PII-in-logs rule.
+- **Compliance** — white Visa mark with clear space, ICICI named as issuer in text, single correct `FinancialProduct` JSON-LD, OG/Twitter metadata with share image, `noindex` until launch, WCAG 2.2 AA (axe-clean, keyboard/VoiceOver passes through the whole sheet).
 
-## Integration seams
+## Repository map
 
-- There is no runtime render tier: every device gets the poster stage (layered stills, pointer/tilt light response, parallax). `prefers-reduced-motion` still disables the parallax and light movement.
-- `lib/api/adapter.ts` is the only UI network seam. A Times engineer replaces its three relative-route mappings with `api.timesblack.com/gw/` mappings and attaches the JSSO ticket there; reCAPTCHA/JSSO state UI remain the named production exceptions.
-- Remove `noindex` only after Deployment Protection, OQ2 clearance, Visa tier confirmation, DLT template approval, and OQ6 copy sign-off are complete.
-- `VERCEL_URL` supplies the deployment host for social metadata automatically. Set `NEXT_PUBLIC_SITE_URL` only when it must override that host, such as for a protected custom preview URL.
+| Path | What |
+| --- | --- |
+| `app/`, `components/`, `lib/`, `styles/` | The Next.js 16 app (App Router, static prerender + mock API routes) |
+| `assets/` | Print-resolution layer extractions from the brand PSD (pedestal, no-name card) |
+| `collaterals/` | The brand kit from the Times team — card open files, pedestal PSD, painting scan, logos, fonts, archives, print ad. **1.5 GB, not in git, not deployed** |
+| `reference/` | Teardown of the live site (`source-audit.md`, captured HTML/JS/CSS/assets) |
+| `scripts/` | Asset encoder (SVT-AV1 10-bit AVIF + sharp WebP), font subsetter, poster/OG builders, size + asset-register audits |
+| `docs/asset-register.md` | Every third-party asset: source, licence, clearance flag (audited by `pnpm audit:assets`) |
+| `docs/plans/` | The full implementation plan (requirements, decisions, open questions) |
+| `docs/CHANGELOG.md` | Session history — what was built, in what order, and why |
+| `docs/LEARNINGS.md` | Durable lessons from the build — read before touching the stage or the tests |
 
-## Verification record (2026-08-19)
+## Working on it
 
-- Fresh after the composition/dialog repair: `pnpm test` passed 13 tests in 10 files; `pnpm exec tsc --noEmit --incremental false` and `pnpm build` passed, with `/` statically prerendered; `pnpm size` measured 266,493 gzip bytes against the 314,368-byte budget; and `pnpm audit:assets` passed the updated Khanna-derived asset register.
-- `pnpm exec playwright test --list` typechecked and listed 84 Chromium/WebKit scenarios in six files, including the new `stage`, `tier`, `interest-auth`, and `interest-details` suites. Browser execution was intentionally not attempted because Chromium and WebKit are denied macOS process-registration permissions by this managed sandbox. `pnpm test:e2e`, `pnpm test:a11y`, and `pnpm lh` remain owner-run gates on a normal local machine or protected preview.
-- The stage LCP check accepts either server-rendered stage image: the wall remains a candidate, but the visually larger card/stand crop can correctly become LCP. Largest Contentful Paint entries are Chromium-only, so that assertion is skipped on WebKit.
-- The owner should run the Playwright suite and visually recheck 1440×900 plus the iPhone 13 viewport before sign-off; this sandbox record does not claim browser-rendered visual verification.
-- Deployment, Deployment Protection verification, protected-preview cache-header verification, physical iPhone OTP/audio checks, and physical Android thermal checks are owner-owned and pending.
+**Critical:** `next build` **deadlocks inside this Dropbox-synced checkout** (SWC vs. CloudStorage file provider — silent, 0 % CPU forever). Build and test from a copy:
 
-## Print-ad composition update (2026-08-20)
+```bash
+rsync -a --exclude node_modules --exclude .next --exclude collaterals --exclude reference \
+  ./ /tmp/1838w/
+cd /tmp/1838w && CI=true pnpm install --frozen-lockfile && pnpm build
+(pnpm start &) && pnpm exec playwright test   # 80 scenarios, Chromium + WebKit
+```
 
-- The approved print-ad treatment now uses the supplied `assets/pedestal-only.png` and `assets/card-on-stand-noname.png` as separate, responsive AVIF/WebP scene layers. The old CSS stand, contact shadow, and reflection are no longer part of the stage.
-- The top lockup is the supplied white TOI crest/wordmark with “Established in 1838” at left and the supplied gold ICICI SVG at right. The footer names “The 1838 Reserve Credit Card · Visa Infinite Privilege · October 2026”, carries “Card ownership by invitation only.”, and retains the page-level white Visa mark.
-- Type is self-hosted subset STIX Two Text and Montserrat. Their declarations use only the single-word fallbacks `Georgia` and `Arial`.
-- The CTA is “Request an Introduction”; its dialog, focus restoration, validation, OTP, consent, and confirmation behaviour are unchanged. On compact viewports the stage controls sit beneath the TOI lockup.
-- Browser execution remains owner-run. The revised stage suite covers 320/768/1440/1920 portrait and landscape, including the compact control placement and no-overlap assertions.
-- Verification in `/tmp/1838i`: `CI=true pnpm install --frozen-lockfile`, `pnpm build`, `pnpm test` (19 tests in 11 files), `pnpm size` (265,830 gzip bytes across seven critical-path chunks), and `pnpm audit:assets` (17 rows) passed. Playwright was intentionally not run.
+Copy changed sources back to the checkout afterwards. Vercel deploys are unaffected (remote build).
 
-## Stage craft-pass verification (2026-08-20)
+| Gate | Command | Current |
+| --- | --- | --- |
+| Unit/component | `pnpm test` | 20 passing |
+| Browser suite | `pnpm test:e2e` | 79 passing / 1 skipped (WebKit LCP API) |
+| Bundle budget | `pnpm size` | ~266 KB gzip vs 307 KB budget |
+| Licence audit | `pnpm audit:assets` | green |
+| Lighthouse | `pnpm lh` | owner-run |
 
-- The stage images remain rendered from first paint so either remains a valid LCP candidate. The dark-to-lit ceremony now animates a separate room treatment above them; it fades from `.9` to `.18` opacity while the shared RAF light path drives the room glow and specular response. The 40-second wall breath and 9-second card breath remain independently pausable through one compact, keyboard-operable stage-controls popover. Reduced motion skips the ceremony transforms and never starts the RAF or either breath animation.
-- The redundant CSS card silhouette is removed, leaving the artwork’s own outline as the single card edge. New 320px portrait and landscape adjustments reserve space for the proposition, card, terms and CTA without introducing scrolling or controls/masthead collisions.
-- `pnpm test` passed 19 tests in 11 files; `pnpm build` passed with `/` statically prerendered; `pnpm size` measured 265,696 gzip bytes across seven critical-path chunks; and `pnpm audit:assets` passed. All gates ran from `/tmp/1838fix` because Dropbox can deadlock native build reads.
-- `scripts/font-glyphs.txt` and the visible proposition use U+2019 (`For those who script India’s future`). `scripts/subset-fonts.mjs` explicitly includes U+2019 and generates the STIX Two Text and Montserrat subsets. Browser rendering was not run in this non-browser gate pass; the owner must run the existing Playwright suite locally, including the stage LCP and 320px layout assertions.
+Deploys: `vercel deploy --yes` (protected preview) · `vercel deploy --prod --yes` (updates the public `1838website.vercel.app`). `.vercelignore` keeps the heavy folders out of uploads. Deployment Protection is ON for previews; production aliases are public by design.
+
+## Go-live checklist
+
+1. **Backends** — the one real blocker. The details step collects PAN/DOB/income into mocks that go nowhere. Point `lib/api/adapter.ts` at `api.timesblack.com/gw/` + JSSO (reCAPTCHA and JSSO auth UI are the two named component-level additions), or visibly mark the flow as a preview.
+2. **DLT SMS template** — must carry the `@1838reserve.com #<code>` suffix or iOS/Android OTP autofill never works. Needs aggregator lead time.
+3. **Private-office name** — the confirmation's reply-from is placeholder copy pending a business owner (plan OQ6).
+4. Remove `robots: noindex` in `app/layout.tsx` once 1–3 clear.
+5. Resolved already: Khanna rights (Times confirmed, 2026-08-20), Visa tier (Infinite Privilege, per the supplied card back), October 2026 timing (printed in the public launch ad), source artwork (full brand kit in `collaterals/`).
+
+## Owner-run device checks
+
+- OTP paste and audio `interrupted`-state recovery on a physical iPhone.
+- The "alive" read on the actual pitch devices — the autonomous light drift is the page's heartbeat; judge it moving, not from stills.
