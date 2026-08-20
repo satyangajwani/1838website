@@ -11,10 +11,19 @@ const inputStat = await stat(input);
 await mkdir(outputDir, { recursive: true });
 const stem = basename(input, extname(input)).replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 
+const { hasAlpha } = await sharp(input).metadata();
+
 for (const width of widths) {
   if (width > 1998 && inputStat.size) throw new Error(`Refusing to upscale ${input} to ${width}px`);
   const avif = resolve(outputDir, `${stem}-${width}.avif`);
   const webp = resolve(outputDir, `${stem}-${width}.webp`);
+  if (hasAlpha) {
+    // ffmpeg's yuv420p10le path drops the alpha plane, shipping cutouts as opaque
+    // rectangles; cutout layers must keep transparency even at a small size cost.
+    await sharp(input).resize({ width, withoutEnlargement: true }).avif({ quality: 60, effort: 6 }).toFile(avif);
+    await sharp(input).resize({ width, withoutEnlargement: true }).webp({ quality }).toFile(webp);
+    continue;
+  }
   const av1 = spawnSync('ffmpeg', ['-y', '-i', input, '-vf', `scale=${width}:-2`, '-c:v', 'libsvtav1', '-pix_fmt', 'yuv420p10le', '-crf', '35', '-preset', '6', avif], { stdio: 'inherit' });
   if (av1.status !== 0) throw new Error(`SVT-AV1 encode failed for ${width}px`);
   const fallback = spawnSync('ffmpeg', ['-y', '-i', input, '-vf', `scale=${width}:-2`, '-c:v', 'libwebp', '-q:v', String(quality), webp], { stdio: 'ignore' });

@@ -43,6 +43,14 @@ One build session, 2026-08-19 → 2026-08-20. Executed as a plan-first pipeline:
 - From the owner's iPhone screenshot: card enlarged and raised (dead middle halved into deliberate light-beam breathing room), footer centered with balanced line wrapping and safe-area padding.
 - The bigger card pushed the pedestal's decorative overhang past 100 vw on portrait — caught by the ten-viewport collision suite, pinned inside.
 
+## Phase 7 — Alpha-channel root cause and mobile lighting (2026-08-20)
+
+- Owner's device video: card top cut off, composition reading off-center, light drift barely visible. Diagnosis found the deep cause of the whole "slab" family of bugs: **the AVIF encodes had no alpha channel** (ffmpeg's `yuv420p10le` path drops it), so every browser preferring AVIF rendered the card and pedestal layers as opaque rectangles — and the feather masks had been compensating for an opaque asset all along. The marble pedestal itself had never actually been visible.
+- Encoder now routes alpha-bearing inputs through sharp for both AVIF and WebP; cutouts re-encoded (and got smaller). The card-stand's top feather mask — which was amputating the card's top edge, the "cut off" complaint — removed outright; with true alpha nothing needs hiding.
+- Portrait centering trued up: pedestal box centered (`right: 2.5%` for the 95%-wide layer), card ink (49.2% of its asset) optically centered with a .8% nudge.
+- Light made legible: wider autonomous drift amplitudes, stronger room-glow and specular alphas, a recurring specular pass every 17 s after the ceremony (pausable, reduced-motion-safe), gyro permission moved to `pointerup` (Safari user-activation) with stronger tilt gain.
+- Desktop artwork credit re-anchored as an engraved nameplate on the gold stand bar — the print ad's own gesture.
+
 ## Verification state at session end
 
 79/80 browser scenarios green on Chromium + WebKit (1 skipped by design: WebKit lacks the LCP PerformanceObserver), 20 unit tests, ~266 KB critical JS against a 307 KB budget, axe-clean, asset register fully green. Remaining go-live items are business, not code: real backends, the DLT SMS template, and the private-office name.

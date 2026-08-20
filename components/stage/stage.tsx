@@ -87,7 +87,7 @@ export function Stage({ children }: { children: ReactNode }) {
     const orient = (event: DeviceOrientationEvent) => {
       const gamma = Math.max(-20, Math.min(20, event.gamma ?? 0));
       const beta = Math.max(-20, Math.min(20, (event.beta ?? 45) - 45));
-      steer({ x: 50 + gamma * 1.2, y: 44 + beta * .95 });
+      steer({ x: 50 + gamma * 1.5, y: 44 + beta * 1.15 });
     };
     window.addEventListener('deviceorientation', orient);
     return () => window.removeEventListener('deviceorientation', orient);
@@ -96,7 +96,11 @@ export function Stage({ children }: { children: ReactNode }) {
   const requestTilt = async (event: PointerEvent<HTMLElement>) => {
     if (!running || tiltEnabled || (event.target as Element).closest('button, a, input, select, textarea')) return;
     const device = window.DeviceOrientationEvent as typeof DeviceOrientationEvent & { requestPermission?: () => Promise<'granted' | 'denied'> };
-    if (device.requestPermission && await device.requestPermission() !== 'granted') return;
+    try {
+      if (device.requestPermission && await device.requestPermission() !== 'granted') return;
+    } catch {
+      return;
+    }
     setTiltEnabled(true);
   };
 
@@ -111,7 +115,7 @@ export function Stage({ children }: { children: ReactNode }) {
     data-reduced-motion={motion === 'reduce' ? 'true' : undefined}
     className="stage"
     onPointerMove={move}
-    onPointerDown={requestTilt}
+    onPointerUp={requestTilt}
   >
     <div className="stage-controls">
       <button

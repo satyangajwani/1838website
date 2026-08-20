@@ -12,3 +12,4 @@ reference/assets/witnesscreation.mp4
 
 # Brand collateral (1.5GB, lives in Dropbox, not in git history)
 collaterals/
+.DS_Store

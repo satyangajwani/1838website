@@ -5,10 +5,10 @@ describe('stage controller', () => {
   it('blends two slow sine paths into a bounded shared light position', () => {
     for (const elapsed of [0, 3_500, 7_000, 11_500, 14_000, 23_000, 46_000]) {
       const light = autonomousLight(elapsed);
-      expect(light.x).toBeGreaterThanOrEqual(38);
-      expect(light.x).toBeLessThanOrEqual(62);
-      expect(light.y).toBeGreaterThanOrEqual(34);
-      expect(light.y).toBeLessThanOrEqual(54);
+      expect(light.x).toBeGreaterThanOrEqual(32);
+      expect(light.x).toBeLessThanOrEqual(68);
+      expect(light.y).toBeGreaterThanOrEqual(31);
+      expect(light.y).toBeLessThanOrEqual(57);
     }
   });
 

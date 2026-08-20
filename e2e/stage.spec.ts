@@ -107,10 +107,10 @@ test('pointer steering decays to the autonomous light path in two seconds', asyn
   const box = await stage.boundingBox();
   expect(box).not.toBeNull();
   await page.mouse.move(box!.x + box!.width * .98, box!.y + box!.height * .5);
-  await expect.poll(() => stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeGreaterThan(65);
+  await expect.poll(() => stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeGreaterThan(69);
   await expect(stage).toHaveAttribute('data-steering', 'active');
   await expect(stage).not.toHaveAttribute('data-steering', 'active', { timeout: 2_400 });
-  expect(await stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeLessThan(65);
+  expect(await stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeLessThan(68.5);
 });
 
 for (const viewport of [
