@@ -27,6 +27,7 @@ The live site is a Times Black template with the content deleted. Every word bel
 | `scripts/` | Asset encoder (SVT-AV1 10-bit AVIF + sharp WebP), font subsetter, poster/OG builders, size + asset-register audits |
 | `docs/asset-register.md` | Every third-party asset: source, licence, clearance flag (audited by `pnpm audit:assets`) |
 | `docs/plans/` | The full implementation plan (requirements, decisions, open questions) |
+| `docs/GO-LIVE-GUIDE.md` | **Team handoff** — backend swap, DLT, sign-offs, cutover |
 | `docs/CHANGELOG.md` | Session history — what was built, in what order, and why |
 | `docs/LEARNINGS.md` | Durable lessons from the build — read before touching the stage or the tests |
 
