@@ -481,6 +481,16 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   /* Card ink sits at 49.2% of its asset; nudge to true optical center. */
   .stage-card-stand img { transform: translateX(.8%); }
   .stage-wall::after { background: linear-gradient(to bottom, transparent 34%, rgba(7, 2, 1, .24) 50%, rgba(3, 1, 0, .72) 80%, rgba(3, 1, 0, .96) 100%); }
+  /* Real phone panels crush luminance below ~25/255 to black; the marble asset
+     sits at ~19. Lift it and wash the slab top with the beam's warm light. */
+  .stage-pedestal img { filter: brightness(1.65) saturate(1.08); }
+  .stage-pedestal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 74% 58% at 50% 10%, rgba(235, 185, 111, .38), rgba(160, 110, 60, .13) 46%, transparent 76%);
+    mix-blend-mode: screen;
+  }
   .stage-pedestal {
     right: 2.5%;
     -webkit-mask-image:
@@ -600,6 +610,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 600px) and (orientation: landscape) and (max-height: 360px) {
+  .stage-pedestal img { filter: brightness(1.65) saturate(1.08); }
   .stage {
     --object-left: 74%;
     --object-width: min(50vw, 80dvh);
