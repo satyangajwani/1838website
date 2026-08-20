@@ -101,7 +101,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .stage-pedestal {
   z-index: 0;
   right: -1.5%;
-  bottom: 0;
+  bottom: -40%;
   width: 95%;
   -webkit-mask-image:
     linear-gradient(to bottom, transparent 0, #000 9%, #000 100%),
@@ -305,7 +305,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   justify-items: end;
   min-width: 5rem;
 }
-.visa-mark { display: block; width: clamp(3.5rem, 4.5vw, 5rem); height: auto; opacity: 1; filter: none; }
+.visa-mark { display: block; width: clamp(4.25rem, 5.4vw, 6rem); height: auto; opacity: 1; filter: none; }
 
 :is(.masthead, .proposition, .plaque, .marks, .interest-trigger) { opacity: 0; }
 .masthead, .proposition, .plaque, .marks, .interest-trigger { transform: translate3d(0, .65rem, 0); }
@@ -493,11 +493,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   }
   .stage-pedestal {
     right: 2.5%;
+    bottom: -42%;
     -webkit-mask-image:
-      linear-gradient(to bottom, transparent 0, #000 13%, #000 100%),
+      linear-gradient(to bottom, transparent 0, #000 13% 84%, transparent 100%),
       linear-gradient(to right, transparent 0, #000 7%, #000 91%, transparent 100%);
     mask-image:
-      linear-gradient(to bottom, transparent 0, #000 13%, #000 100%),
+      linear-gradient(to bottom, transparent 0, #000 13% 84%, transparent 100%),
       linear-gradient(to right, transparent 0, #000 7%, #000 91%, transparent 100%);
   }
   .artwork-credit {
@@ -534,7 +535,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .plaque { grid-column: 1 / -1; grid-row: 4; justify-self: center; max-width: min(100%, 30rem); margin-top: .55rem; text-align: center; font-size: clamp(.62rem, 2.6vw, .8rem); }
   .plaque p { text-wrap: balance; }
   .marks { grid-column: 1 / -1; grid-row: 5; justify-self: center; justify-items: center; margin-top: .5rem; font-size: .61rem; }
-  .visa-mark { width: 3.35rem; }
+  .visa-mark { width: 4rem; }
   .interest-trigger { grid-column: 2 / 4; grid-row: 5; justify-self: end; padding: .82rem 1rem; font-size: .64rem; }
 }
 
@@ -571,7 +572,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .plaque { grid-column: 1; grid-row: 3; font-size: clamp(.55rem, 1.9dvh, .7rem); }
   .interest-trigger { grid-column: 2; grid-row: 3; padding: .7rem .9rem; font-size: .58rem; }
   .marks { grid-column: 3; grid-row: 3; font-size: .55rem; }
-  .visa-mark { width: 3rem; }
+  .visa-mark { width: 3.6rem; }
 }
 
 @media (max-width: 360px) and (max-aspect-ratio: 4 / 5) {

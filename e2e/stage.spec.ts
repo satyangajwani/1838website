@@ -127,12 +127,17 @@ for (const viewport of [
     const toi = await page.getByAltText('The Times of India').boundingBox();
     expect(proposition && card && object && pedestal && footer && cta && masthead && toi).toBeTruthy();
     expect(intersects(proposition!, card!)).toBe(false);
-    for (const box of [object!, pedestal!, footer!, cta!]) {
+    for (const box of [object!, footer!, cta!]) {
       expect(box.x).toBeGreaterThanOrEqual(-1);
       expect(box.y).toBeGreaterThanOrEqual(-1);
       expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1);
       expect(box.y + box.height).toBeLessThanOrEqual(viewport.height + 1);
     }
+    // The table deliberately runs off the bottom of the frame (print-ad crop);
+    // it must stay contained horizontally and never start above the viewport.
+    expect(pedestal!.x).toBeGreaterThanOrEqual(-1);
+    expect(pedestal!.y).toBeGreaterThanOrEqual(-1);
+    expect(pedestal!.x + pedestal!.width).toBeLessThanOrEqual(viewport.width + 1);
     expect(await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }))).toEqual({ width: viewport.width, height: viewport.height });
     await expect(page.locator('[data-device-landscape], [class*="rotate" i], img[src*="orientation"]')).toHaveCount(0);
   });
@@ -155,7 +160,7 @@ test('portrait footer product line stays below the card layer at 320, 390 and 76
   }
 });
 
-test('the Visa mark is white, fully opaque and outside filtered ancestors', async ({ page, request }) => {
+test('the Visa mark is brand gold, fully opaque and outside filtered ancestors', async ({ page, request }) => {
   await page.goto('/');
   const mark = page.getByAltText('Visa');
   await expect(mark).toHaveCSS('opacity', '1');
@@ -167,7 +172,7 @@ test('the Visa mark is white, fully opaque and outside filtered ancestors', asyn
     return false;
   });
   expect(unsafeAncestor).toBe(false);
-  expect(await (await request.get('/visa-mark.svg')).text()).toContain('fill="#ffffff"');
+  expect(await (await request.get('/visa-mark.svg')).text()).toContain('fill="#d8b273"');
 });
 
 test('reduced motion keeps every layer static on pointer movement', async ({ page }) => {
