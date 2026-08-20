@@ -9,10 +9,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? `h
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: '1838 Reserve',
-  description: "For those who script India's future.",
+  description: 'For those who script India’s future.',
   robots: { index: false, follow: false },
-  openGraph: { title: '1838 Reserve', description: "For those who script India's future.", images: ['/og.png'], type: 'website' },
-  twitter: { card: 'summary_large_image', title: '1838 Reserve', description: "For those who script India's future.", images: ['/og.png'] },
+  openGraph: { title: '1838 Reserve', description: 'For those who script India’s future.', images: ['/og.png'], type: 'website' },
+  twitter: { card: 'summary_large_image', title: '1838 Reserve', description: 'For those who script India’s future.', images: ['/og.png'] },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

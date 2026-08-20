@@ -41,3 +41,10 @@
 
 - `pnpm build:poster`, `pnpm test`, `pnpm audit:assets`, `pnpm build`, and `pnpm size` passed. The current critical-path JavaScript measurement is 266,739 gzip bytes; the stage E2E suite is typechecked and includes assertions for the absence of plinth assets/layers plus grounding elements at every supported viewport.
 - Browser execution remains blocked in this managed macOS sandbox because Chromium cannot register its Mach port (`bootstrap_check_in … Permission denied`). The updated stage suite should be run in a normal local browser-capable environment for its 320/768/1440/1920 portrait and landscape rendering pass.
+
+## Stage craft-pass verification (2026-08-20)
+
+- The stage images remain rendered from first paint so either remains a valid LCP candidate. The dark-to-lit ceremony now animates a separate room treatment above them; it fades from `.9` to `.18` opacity while the shared RAF light path drives the room glow and specular response. The 40-second wall breath and 9-second card breath remain independently pausable through one compact, keyboard-operable stage-controls popover. Reduced motion skips the ceremony transforms and never starts the RAF or either breath animation.
+- The redundant CSS card silhouette is removed, leaving the artwork’s own outline as the single card edge. New 320px portrait and landscape adjustments reserve space for the proposition, card, terms and CTA without introducing scrolling or controls/masthead collisions.
+- `pnpm test` passed 19 tests in 11 files; `pnpm build` passed with `/` statically prerendered; `pnpm size` measured 265,696 gzip bytes across seven critical-path chunks; and `pnpm audit:assets` passed. All gates ran from `/tmp/1838fix` because Dropbox can deadlock native build reads.
+- `scripts/font-glyphs.txt` and the visible proposition use U+2019 (`For those who script India’s future.`). `scripts/subset-fonts.mjs` now explicitly includes `U+2019`, and the regenerated Bodoni subset is 19,092 bytes. Browser rendering was not run in this non-browser gate pass; the owner must run the existing Playwright suite locally, including the stage LCP and 320px layout assertions.

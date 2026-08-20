@@ -5,6 +5,7 @@ const fonts = [
   { input: 'assets/fonts/bodoni-moda.ttf', output: 'public/fonts/bodoni-moda-subset.woff2', clampDisplay: true },
   { input: 'assets/fonts/manrope.ttf', output: 'public/fonts/manrope-subset.woff2' },
 ];
+const requiredGlyphs = 'U+2019';
 
 await mkdir('public/fonts', { recursive: true });
 for (const { input, output, clampDisplay } of fonts) {
@@ -13,7 +14,7 @@ for (const { input, output, clampDisplay } of fonts) {
     const instanced = spawnSync('python3', ['-m', 'fontTools.varLib.instancer', input, 'opsz=48', 'wght=400:700', '-o', source], { env: process.env, stdio: 'inherit' });
     if (instanced.status !== 0) throw new Error('Unable to clamp Bodoni Moda to the display optical size and 400–700 weight range.');
   }
-  const result = spawnSync('python3', ['-m', 'fontTools.subset', source, '--text-file=scripts/font-glyphs.txt', '--flavor=woff2', `--output-file=${output}`, '--layout-features=*'], {
+  const result = spawnSync('python3', ['-m', 'fontTools.subset', source, '--text-file=scripts/font-glyphs.txt', `--unicodes=${requiredGlyphs}`, '--flavor=woff2', `--output-file=${output}`, '--layout-features=*'], {
     env: process.env,
     stdio: 'inherit',
   });

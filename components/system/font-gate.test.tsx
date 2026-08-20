@@ -11,15 +11,17 @@ describe('FontGate', () => {
     document.documentElement.classList.remove('fonts-ready');
   });
 
-  it('marks the reveal complete only after the hero fade has ended', async () => {
+  it('marks the reveal complete only after the proposition sentinel resolves', async () => {
     vi.useFakeTimers();
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => window.setTimeout(() => callback(0), 0));
     Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
-    const { container } = render(<><div className="hero-copy" /><FontGate /></>);
+    const { container } = render(<><div className="hero-copy"><h1 className="proposition" data-reveal-sentinel /></div><FontGate /></>);
     await vi.runAllTimersAsync();
     expect(document.documentElement).toHaveClass('fonts-ready');
     expect(document.documentElement).not.toHaveAttribute('data-reveal-complete');
     fireEvent.transitionEnd(container.querySelector('.hero-copy')!, { propertyName: 'opacity' });
+    expect(document.documentElement).not.toHaveAttribute('data-reveal-complete');
+    fireEvent.animationEnd(container.querySelector('.proposition')!, { animationName: 'proposition-resolve' });
     expect(document.documentElement).toHaveAttribute('data-reveal-complete', 'true');
   });
 
@@ -27,8 +29,8 @@ describe('FontGate', () => {
     vi.useFakeTimers();
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => window.setTimeout(() => callback(0), 0));
     Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
-    const { container } = render(<><div className="hero-copy" /><FontGate /></>);
-    Object.defineProperty(container.querySelector('.hero-copy')!, 'getAnimations', { configurable: true, value: () => [] });
+    const { container } = render(<><div className="hero-copy"><h1 data-reveal-sentinel /></div><FontGate /></>);
+    Object.defineProperty(container.querySelector('[data-reveal-sentinel]')!, 'getAnimations', { configurable: true, value: () => [] });
 
     await vi.runAllTimersAsync();
 

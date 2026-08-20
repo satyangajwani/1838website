@@ -8,6 +8,9 @@
   --gold-muted: #d7b982;
   --error: #ffb4ab;
   --ease-decelerate: cubic-bezier(.22, .61, .36, 1);
+  --ceremony-duration: 2.7s;
+  --wall-breath-duration: 40s;
+  --card-breath-duration: 9s;
   --rx-surface: #1a0d0a;
   --rx-surface-raised: #261410;
   --rx-surface-field: #130907;

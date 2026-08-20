@@ -10,8 +10,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 @font-face { font-family: "1838 Display Fallback"; src: local("Georgia"); size-adjust: 106%; }
 .font-display { font-family: var(--font-bodoni), "1838 Display Fallback", serif; }
-.hero-copy { opacity: 0; transition: opacity 700ms var(--ease-decelerate); }
-.fonts-ready .hero-copy { opacity: 1; }
+.hero-copy { opacity: 1; }
 .text-balanced { text-wrap: balance; text-box: trim-both cap alphabetic; }
 
 .grain {
@@ -52,7 +51,32 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-layer img { display: block; width: 100%; height: auto; }
 .stage-wall { z-index: -3; inset: -3%; transform: translate3d(0, 0, 0); }
+.stage-wall-ceremony,
+.stage-wall-breath,
+.stage-wall picture { display: block; width: 100%; height: 100%; }
+.stage-wall-ceremony { opacity: 1; transform: none; }
+.stage-wall-breath { transform: scale(1); transform-origin: 50% 48%; }
 .stage-wall img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(.72) saturate(.92); }
+.stage-room-glow {
+  position: absolute;
+  z-index: -2;
+  inset: -12%;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 58% 62% at var(--light-x) var(--light-y), rgba(235, 185, 111, .3), rgba(112, 49, 24, .11) 40%, transparent 72%);
+  mix-blend-mode: screen;
+}
+.stage-room-treatment {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: .9;
+  background:
+    radial-gradient(ellipse 52% 48% at 68% 43%, rgba(8, 2, 1, .42), rgba(7, 2, 1, .78) 74%),
+    linear-gradient(120deg, rgba(4, 1, 0, .88), rgba(24, 9, 4, .54));
+}
 
 .stage-object {
   position: absolute;
@@ -66,6 +90,11 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 
 .stage-card-stand { z-index: 1; top: 0; left: 7.9%; width: 84.1%; aspect-ratio: 1598 / 823; }
+.stage-card-ceremony,
+.stage-card-breath { position: relative; width: 100%; height: 100%; }
+.stage-card-ceremony { opacity: 1; transform: none; }
+.stage-card-breath { transform: scale(1); transform-origin: 50% 72%; }
+.stage-card-stand picture { display: block; position: relative; z-index: 1; }
 .stage-card-stand img { filter: drop-shadow(0 .85rem .75rem rgba(5, 1, 0, .26)); }
 .stage-stand,
 .stage-contact-shadow,
@@ -121,11 +150,58 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   left: 12%;
   width: 68%;
   height: 40%;
+  overflow: hidden;
   border-radius: 10%;
-  opacity: .24;
-  mix-blend-mode: screen;
-  background: radial-gradient(ellipse at var(--light-x) var(--light-y), rgba(255, 248, 224, .72), rgba(255, 228, 171, .16) 27%, transparent 65%);
+  opacity: 1;
   mask-image: linear-gradient(90deg, transparent, #000 8% 92%, transparent);
+}
+.stage-specular-light {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: .24;
+  background: radial-gradient(ellipse at var(--light-x) var(--light-y), rgba(255, 248, 224, .72), rgba(255, 228, 171, .16) 27%, transparent 65%);
+  mix-blend-mode: screen;
+}
+.stage-specular::after {
+  content: "";
+  position: absolute;
+  inset: -28% auto -28% -34%;
+  width: 20%;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 250, 229, .82), transparent);
+  mix-blend-mode: screen;
+  transform: translate3d(0, 0, 0) skewX(-13deg);
+}
+
+.fonts-ready .stage-room-glow { animation: room-bloom 1.05s var(--ease-decelerate) 220ms both; }
+.fonts-ready .stage-room-treatment { animation: room-reveal 1.16s var(--ease-decelerate) 220ms both; }
+.fonts-ready .stage-specular::after { animation: specular-sweep 900ms var(--ease-decelerate) 920ms both; }
+.fonts-ready .stage-wall-breath { animation: wall-breathe var(--wall-breath-duration) ease-in-out var(--ceremony-duration) infinite alternate; }
+.fonts-ready .stage-card-breath { animation: card-breathe var(--card-breath-duration) ease-in-out var(--ceremony-duration) infinite alternate; }
+.stage[data-ambience="paused"] :is(.stage-wall-breath, .stage-card-breath) { animation-play-state: paused; }
+
+@keyframes room-bloom {
+  from { opacity: 0; transform: scale(.96); }
+  to { opacity: .68; transform: scale(1); }
+}
+@keyframes room-reveal {
+  from { opacity: .9; }
+  to { opacity: .18; }
+}
+@keyframes specular-sweep {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) skewX(-13deg); }
+  18% { opacity: .72; }
+  78% { opacity: .42; }
+  100% { opacity: 0; transform: translate3d(680%, 0, 0) skewX(-13deg); }
+}
+@keyframes wall-breathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+@keyframes card-breathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.0045); }
 }
 
 .stage-copy {
@@ -145,11 +221,11 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   grid-row: 1;
   justify-self: center;
   text-align: center;
-  letter-spacing: .06em;
+  letter-spacing: .08em;
   margin: 0;
   text-transform: uppercase;
 }
-.masthead span { display: block; font-size: clamp(3.1rem, 6.3vw, 7rem); line-height: .72; }
+.masthead span { display: block; margin-right: -.12em; font-size: clamp(3.1rem, 6.3vw, 7rem); line-height: .72; letter-spacing: .12em; }
 .masthead small { display: block; margin: .85rem 0 0 .55em; font-family: var(--font-grotesque); font-size: clamp(.62rem, .85vw, .86rem); letter-spacing: .55em; }
 .proposition {
   grid-column: 1;
@@ -159,8 +235,11 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   width: min(30vw, 31rem);
   margin: 0;
   text-align: left;
-  font-size: clamp(1.7rem, 2.9vw, 3.35rem);
-  line-height: 1.02;
+  font-family: var(--font-bodoni), "1838 Display Fallback", serif;
+  font-size: clamp(2.25rem, 4.25vw, 5.2rem);
+  font-weight: 500;
+  line-height: .92;
+  letter-spacing: -.035em;
 }
 .plaque {
   grid-column: 1;
@@ -187,6 +266,23 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 .marks p { margin: 0; }
 .visa-mark { display: block; width: 4.6rem; height: auto; opacity: 1; filter: none; }
+
+:is(.masthead, .proposition, .plaque, .marks, .interest-trigger) { opacity: 0; }
+.masthead, .proposition, .plaque, .marks, .interest-trigger { transform: translate3d(0, .65rem, 0); }
+.fonts-ready .masthead { animation: copy-resolve 760ms var(--ease-decelerate) 1.3s both; }
+.fonts-ready .plaque { animation: copy-resolve 720ms var(--ease-decelerate) 1.62s both; }
+.fonts-ready .marks { animation: copy-resolve 720ms var(--ease-decelerate) 1.72s both; }
+.fonts-ready .interest-trigger { animation: copy-resolve 720ms var(--ease-decelerate) 1.82s both; }
+.fonts-ready .proposition { animation: proposition-resolve 920ms var(--ease-decelerate) 1.76s both; }
+
+@keyframes copy-resolve {
+  from { opacity: 0; transform: translate3d(0, .65rem, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes proposition-resolve {
+  from { opacity: 0; transform: translate3d(-.7rem, .85rem, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
 
 .interest-trigger {
   grid-column: 2;
@@ -219,11 +315,29 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   transform: translateY(-160%);
 }
 .skip-link:focus { transform: translateY(0); }
-.audio-toggle {
+.stage-controls {
   position: fixed;
   z-index: 25;
   top: 1rem;
   right: 1rem;
+  display: grid;
+  justify-items: end;
+  gap: .45rem;
+}
+.stage-controls-popover {
+  display: grid;
+  justify-items: end;
+  gap: .4rem;
+  padding: .45rem;
+  background: rgba(28, 14, 11, .82);
+  border: 1px solid rgba(215, 185, 130, .66);
+  border-radius: .42rem;
+  box-shadow: 0 .8rem 1.8rem rgba(4, 1, 0, .28);
+  backdrop-filter: blur(8px);
+}
+.audio-toggle,
+.visual-toggle,
+.stage-controls-trigger {
   min-height: 2.25rem;
   padding: .55rem .75rem;
   color: var(--gold-primary);
@@ -235,6 +349,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   letter-spacing: .08em;
   backdrop-filter: blur(8px);
 }
+.visual-toggle:disabled { cursor: default; opacity: .72; }
 
 .interest-sheet {
   width: min(calc(100vw - 2rem), 42rem);
@@ -314,6 +429,8 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .interest-sheet :is(button, input:not([type="hidden"]):not([type="image"]), select, a):focus,
 .interest-trigger:focus-visible,
 .audio-toggle:focus-visible,
+.visual-toggle:focus-visible,
+.stage-controls-trigger:focus-visible,
 .skip-link:focus-visible {
   outline: 2px solid var(--rx-focus);
   outline-color: var(--rx-focus);
@@ -368,12 +485,14 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .masthead { grid-row: 1; }
   .masthead span { font-size: clamp(2.8rem, 13.5vw, 5.8rem); }
   .masthead small { margin-top: .55rem; font-size: clamp(.56rem, 2.2vw, .76rem); }
-  .proposition { grid-column: 1 / -1; grid-row: 2; justify-self: center; align-self: start; width: min(92%, 31rem); margin-top: .85rem; text-align: center; font-size: clamp(1.25rem, 5.7vw, 2.45rem); }
+  .proposition { grid-column: 1 / -1; grid-row: 2; justify-self: center; align-self: start; width: min(92%, 31rem); margin-top: .85rem; text-align: center; font-size: clamp(1.45rem, 6.4vw, 2.75rem); }
   .plaque { grid-column: 1 / -1; grid-row: 4; justify-self: start; max-width: 100%; font-size: clamp(.62rem, 2.6vw, .8rem); }
   .marks { grid-column: 1 / 2; grid-row: 5; justify-self: start; justify-items: start; font-size: .61rem; }
   .visa-mark { width: 3.35rem; }
   .interest-trigger { grid-column: 2 / 4; grid-row: 5; justify-self: end; padding: .82rem 1rem; font-size: .64rem; }
-  .audio-toggle { top: .7rem; right: auto; left: .7rem; min-height: 2rem; padding: .48rem .6rem; font-size: .56rem; }
+  .stage-controls { top: .7rem; right: auto; left: .7rem; gap: .3rem; justify-items: start; }
+  .stage-controls-popover { justify-items: start; padding: .35rem; }
+  .audio-toggle, .visual-toggle, .stage-controls-trigger { min-height: 2rem; padding: .48rem .6rem; font-size: .52rem; }
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
@@ -392,7 +511,36 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .interest-trigger { grid-column: 2; grid-row: 3; padding: .7rem .9rem; font-size: .58rem; }
   .marks { grid-column: 3; grid-row: 3; font-size: .55rem; }
   .visa-mark { width: 3rem; }
-  .audio-toggle { top: .7rem; right: .7rem; left: auto; }
+  .stage-controls { top: .7rem; right: .7rem; left: auto; }
+}
+
+@media (max-width: 360px) and (max-aspect-ratio: 4 / 5) {
+  .stage {
+    --object-top: 31dvh;
+    --object-width: min(88vw, 58dvh);
+  }
+  .stage-copy { grid-template-rows: auto auto minmax(0, 1fr) auto auto; padding-top: 2.35rem; }
+  .masthead span { font-size: 2.55rem; }
+  .masthead small { font-size: .52rem; letter-spacing: .43em; }
+  .proposition { width: 88%; margin-top: .55rem; font-size: clamp(1.24rem, 6vw, 1.45rem); }
+  .plaque { font-size: .57rem; line-height: 1.3; }
+  .marks { font-size: .54rem; gap: .25rem; }
+  .interest-trigger { min-height: 2.35rem; padding: .7rem .78rem; font-size: .55rem; }
+}
+
+@media (max-width: 600px) and (orientation: landscape) and (max-height: 360px) {
+  .stage {
+    --object-left: 74%;
+    --object-top: 23dvh;
+    --object-width: min(50vw, 80dvh);
+  }
+  .stage-copy { grid-template-columns: 33% 1fr 30%; column-gap: .6rem; }
+  .masthead span { font-size: clamp(2rem, 8dvh, 2.45rem); }
+  .masthead small { font-size: .43rem; letter-spacing: .4em; }
+  .proposition { font-size: clamp(1rem, 4.3dvh, 1.3rem); }
+  .plaque { font-size: .5rem; line-height: 1.22; }
+  .marks { font-size: .48rem; gap: .22rem; }
+  .interest-trigger { min-height: 2.2rem; padding: .58rem .68rem; font-size: .5rem; }
 }
 
 @media (max-width: 700px) {
@@ -413,4 +561,13 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .fonts-ready :is(.stage-wall-ceremony, .stage-card-ceremony, .stage-room-glow, .stage-room-treatment, .masthead, .proposition, .plaque, .marks, .interest-trigger),
+  .fonts-ready :is(.stage-wall-breath, .stage-card-breath) {
+    animation: none !important;
+    transform: none;
+  }
+  .fonts-ready .stage-specular::after { animation: none !important; opacity: 0; }
+  .fonts-ready :is(.stage-wall-ceremony, .stage-card-ceremony, .masthead, .proposition, .plaque, .marks, .interest-trigger) { opacity: 1; }
+  .fonts-ready .stage-room-glow { opacity: .58; }
+  .fonts-ready .stage-room-treatment { opacity: .18; }
 }

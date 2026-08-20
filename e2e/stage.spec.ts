@@ -65,14 +65,49 @@ test('pointer movement gives every physical layer a distinct depth and moves the
   expect(displacement(card.transform)).toBeLessThan(displacement(wall.transform));
 });
 
-test('the reveal is complete inside five seconds and no animation remains at six seconds', async ({ page }) => {
+test('the CSS ceremony resolves through the proposition sentinel inside five seconds', async ({ page }) => {
   const started = Date.now();
   await page.goto('/');
-  await expect(page.locator('.stage-copy')).toHaveCSS('opacity', '1', { timeout: 5_000 });
+  const proposition = page.locator('[data-reveal-sentinel]');
+  await expect(page.locator('html')).toHaveAttribute('data-reveal-complete', 'true', { timeout: 5_000 });
+  await expect(proposition).toHaveCSS('opacity', '1');
   expect(Date.now() - started).toBeLessThanOrEqual(5_000);
-  await page.waitForTimeout(Math.max(0, 6_050 - (Date.now() - started)));
-  const running = await page.evaluate(() => document.getAnimations().filter((animation) => animation.playState === 'running').length);
-  expect(running).toBe(0);
+  const sentinelAnimations = await proposition.evaluate((node) => node.getAnimations().filter((animation) => animation.playState === 'running').length);
+  expect(sentinelAnimations).toBe(0);
+});
+
+test('visual ambience runs indefinitely and can be paused and resumed', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-reveal-complete', 'true');
+  const stage = page.locator('[data-stage]');
+  const wallBreath = page.locator('.stage-wall-breath');
+  const cardBreath = page.locator('.stage-card-breath');
+  await expect(stage).toHaveAttribute('data-ambience', 'running');
+  await expect(wallBreath).toHaveCSS('animation-play-state', 'running');
+  await expect(cardBreath).toHaveCSS('animation-play-state', 'running');
+
+  // The audio and visual toggles live behind the consolidated stage-controls popover.
+  await page.getByRole('button', { name: 'Stage controls' }).click();
+  const pause = page.getByRole('button', { name: 'Pause visual ambience' });
+  await pause.click();
+  await expect(stage).toHaveAttribute('data-ambience', 'paused');
+  await expect(wallBreath).toHaveCSS('animation-play-state', 'paused');
+  await expect(cardBreath).toHaveCSS('animation-play-state', 'paused');
+
+  await page.getByRole('button', { name: 'Resume visual ambience' }).click();
+  await expect(stage).toHaveAttribute('data-ambience', 'running');
+});
+
+test('pointer steering decays to the autonomous light path in two seconds', async ({ page }) => {
+  await page.goto('/');
+  const stage = page.locator('[data-stage]');
+  const box = await stage.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width * .98, box!.y + box!.height * .5);
+  await expect.poll(() => stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeGreaterThan(65);
+  await expect(stage).toHaveAttribute('data-steering', 'active');
+  await expect(stage).not.toHaveAttribute('data-steering', 'active', { timeout: 2_400 });
+  expect(await stage.evaluate((node) => parseFloat(getComputedStyle(node).getPropertyValue('--light-x')))).toBeLessThan(65);
 });
 
 for (const viewport of [
@@ -98,11 +133,11 @@ for (const viewport of [
     const terms = await page.getByRole('link', { name: 'Terms apply' }).boundingBox();
     const cta = await page.getByRole('button', { name: 'Express Interest', exact: true }).boundingBox();
     const masthead = await page.locator('.masthead').boundingBox();
-    const audio = await page.getByRole('button', { name: /ambience/i }).boundingBox();
-    expect(proposition && card && object && shadow && reflection && terms && cta && masthead && audio).toBeTruthy();
+    const controls = await page.locator('.stage-controls').boundingBox();
+    expect(proposition && card && object && shadow && reflection && terms && cta && masthead && controls).toBeTruthy();
     expect(intersects(proposition!, card!)).toBe(false);
-    expect(intersects(masthead!, audio!)).toBe(false);
-    for (const box of [object!, shadow!, reflection!, terms!, cta!, audio!]) {
+    expect(intersects(masthead!, controls!)).toBe(false);
+    for (const box of [object!, shadow!, reflection!, terms!, cta!, controls!]) {
       expect(box.x).toBeGreaterThanOrEqual(-1);
       expect(box.y).toBeGreaterThanOrEqual(-1);
       expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1);
@@ -136,4 +171,21 @@ test('reduced motion keeps every layer static on pointer movement', async ({ pag
   await page.mouse.move(310, 500);
   const after = await page.locator('[data-depth]').evaluateAll((layers) => layers.map((layer) => (layer as HTMLElement).style.transform));
   expect(after).toEqual(before);
+  await expect(page.locator('[data-stage]')).toHaveAttribute('data-ambience', 'paused');
+  await expect(page.locator('.stage-wall-breath')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.stage-card-breath')).toHaveCSS('animation-name', 'none');
+  await page.getByRole('button', { name: 'Stage controls' }).click();
+  await expect(page.getByRole('button', { name: 'Visual ambience paused for reduced motion' })).toBeDisabled();
+});
+
+test('the proposition uses Bodoni as display type with tight leading', async ({ page }) => {
+  await page.goto('/');
+  const proposition = page.getByRole('heading', { level: 1 });
+  const type = await proposition.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return { family: style.fontFamily, size: parseFloat(style.fontSize), leading: parseFloat(style.lineHeight) };
+  });
+  expect(type.family.toLowerCase()).toContain('bodoni');
+  expect(type.size).toBeGreaterThan(32);
+  expect(type.leading / type.size).toBeLessThanOrEqual(.96);
 });

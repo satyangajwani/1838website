@@ -1,3 +1,3 @@
 export function Proposition() {
-  return <h1 className="proposition font-display text-balanced">For those who script India&apos;s future.</h1>;
+  return <h1 className="proposition font-display text-balanced" data-reveal-sentinel>For those who script India’s future.</h1>;
 }

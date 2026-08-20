@@ -8,40 +8,40 @@ export function FontGate() {
     let revealed = false;
     let complete = false;
     let frame = 0;
-    let heroCopy: HTMLElement | null = null;
-    let onTransitionFinished: ((event: TransitionEvent) => void) | undefined;
+    let sentinel: HTMLElement | null = null;
+    let onAnimationFinished: ((event: AnimationEvent) => void) | undefined;
     const root = document.documentElement;
     const completeReveal = () => {
       if (!active || complete) return;
       complete = true;
-      if (heroCopy && onTransitionFinished) {
-        heroCopy.removeEventListener('transitionend', onTransitionFinished);
-        heroCopy.removeEventListener('transitioncancel', onTransitionFinished);
+      if (sentinel && onAnimationFinished) {
+        sentinel.removeEventListener('animationend', onAnimationFinished);
+        sentinel.removeEventListener('animationcancel', onAnimationFinished);
       }
       root.setAttribute('data-reveal-complete', 'true');
     };
     const reveal = () => {
       if (!active || revealed) return;
       revealed = true;
-      heroCopy = document.querySelector<HTMLElement>('.hero-copy');
-      if (!heroCopy) {
+      sentinel = document.querySelector<HTMLElement>('[data-reveal-sentinel]');
+      if (!sentinel) {
         root.classList.add('fonts-ready');
         completeReveal();
         return;
       }
-      onTransitionFinished = (event: TransitionEvent) => {
-        if (event.target !== heroCopy || event.propertyName !== 'opacity') return;
+      onAnimationFinished = (event: AnimationEvent) => {
+        if (event.target !== sentinel) return;
         completeReveal();
       };
-      heroCopy.addEventListener('transitionend', onTransitionFinished);
-      heroCopy.addEventListener('transitioncancel', onTransitionFinished);
+      sentinel.addEventListener('animationend', onAnimationFinished);
+      sentinel.addEventListener('animationcancel', onAnimationFinished);
       frame = window.requestAnimationFrame(() => {
         root.classList.add('fonts-ready');
         frame = window.requestAnimationFrame(() => {
-          if (!heroCopy || typeof heroCopy.getAnimations !== 'function') return;
-          const opacityTransition = heroCopy.getAnimations().find((animation) => (animation as CSSTransition).transitionProperty === 'opacity');
-          if (!opacityTransition) return completeReveal();
-          void opacityTransition.finished.then(completeReveal, completeReveal);
+          if (!sentinel || typeof sentinel.getAnimations !== 'function') return;
+          const ceremony = sentinel.getAnimations().find((animation) => animation.playState !== 'finished');
+          if (!ceremony) return completeReveal();
+          void ceremony.finished.then(completeReveal, completeReveal);
         });
       });
     };
@@ -52,9 +52,9 @@ export function FontGate() {
       active = false;
       window.clearTimeout(timeout);
       window.cancelAnimationFrame(frame);
-      if (heroCopy && onTransitionFinished) {
-        heroCopy.removeEventListener('transitionend', onTransitionFinished);
-        heroCopy.removeEventListener('transitioncancel', onTransitionFinished);
+      if (sentinel && onAnimationFinished) {
+        sentinel.removeEventListener('animationend', onAnimationFinished);
+        sentinel.removeEventListener('animationcancel', onAnimationFinished);
       }
     };
   }, []);
