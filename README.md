@@ -6,7 +6,7 @@ The approved launch print ad (`collaterals/print-ad/`) is the art-direction grou
 
 ## Why the rebuild exists
 
-The live site is a Times Black template with the content deleted. Every word below the `<title>` — tagline, fee, artist credit, Visa mark — is baked into one 1998×2496 palette PNG: nothing selectable, translatable, or indexable, with 1 MB of LCP spent rendering type. Its structured data still describes Times Black, publishing a **₹20,000** joining fee into search results for a ₹1.75-lakh card, and its gold Visa mark violates Visa's white-on-dark rule. The card — whose only job is to look worth the fee — never moves.
+The live site is a Times Black template with the content deleted. Every word below the `<title>` — tagline, fee, artist credit, Visa mark — is baked into one 1998×2496 palette PNG: nothing selectable, translatable, or indexable, with 1 MB of LCP spent rendering type. Its structured data still describes Times Black, publishing a **₹20,000** joining fee into search results for a ₹1.75-lakh card, and its gold Visa mark violates Visa's white-on-dark rule (a treatment the owner later chose to keep in this rebuild, knowingly). The card — whose only job is to look worth the fee — never moves.
 
 ## What this build is
 
@@ -14,7 +14,7 @@ The live site is a Times Black template with the content deleted. Every word bel
 - **Copy** — all real DOM text, in the brand faces (STIX Two Text display, Montserrat UI, both OFL, subset + self-hosted). Approved ad copy throughout: tagline without the period, *Card ownership by invitation only.*, footer naming **Visa Infinite Privilege · October 2026**, CTA in the brand's own verb: **Request an Introduction**. Fee and terms visible on the first screen (RBI advertising rules, effective Jan 2027, ban hidden fees).
 - **Flow** — native `<dialog>` sheet over the hero: mobile (+91, first-digit validation) → OTP (one real input painted as six slots, `one-time-code` autocomplete, paste-safe) → applicant details (real labels, unticked consent, blur validation) → a confirmation that reads as an artifact (reference number, private office, no queue/referral/share).
 - **Backend seam** — `lib/api/adapter.ts` is the only file that knows about the network. Mocks are stateless Route Handlers (Vercel functions share no memory) with server-side validation, a verify-token binding `submitInterest` to `verifyOtp`, reserved failure inputs, and a no-PII-in-logs rule.
-- **Compliance** — white Visa mark with clear space, ICICI named as issuer in text, single correct `FinancialProduct` JSON-LD, OG/Twitter metadata with share image, `noindex` until launch, WCAG 2.2 AA (axe-clean, keyboard/VoiceOver passes through the whole sheet).
+- **Compliance** — Visa mark in the brand gold with clear space (owner-directed 2026-08-20, knowingly overriding Visa's white-on-dark/no-tint standard for visual unity — needs Visa sign-off before launch), ICICI named as issuer in text, single correct `FinancialProduct` JSON-LD, OG/Twitter metadata with share image, `noindex` until launch, WCAG 2.2 AA (axe-clean, keyboard/VoiceOver passes through the whole sheet).
 
 ## Repository map
 
@@ -58,8 +58,9 @@ Deploys: `vercel deploy --yes` (protected preview) · `vercel deploy --prod --ye
 1. **Backends** — the one real blocker. The details step collects PAN/DOB/income into mocks that go nowhere. Point `lib/api/adapter.ts` at `api.timesblack.com/gw/` + JSSO (reCAPTCHA and JSSO auth UI are the two named component-level additions), or visibly mark the flow as a preview.
 2. **DLT SMS template** — must carry the `@1838reserve.com #<code>` suffix or iOS/Android OTP autofill never works. Needs aggregator lead time.
 3. **Private-office name** — the confirmation's reply-from is placeholder copy pending a business owner (plan OQ6).
-4. Remove `robots: noindex` in `app/layout.tsx` once 1–3 clear.
-5. Resolved already: Khanna rights (Times confirmed, 2026-08-20), Visa tier (Infinite Privilege, per the supplied card back), October 2026 timing (printed in the public launch ad), source artwork (full brand kit in `collaterals/`).
+4. **Visa brand sign-off** — the gold Visa mark is an owner decision against Visa's September 2025 standards (white-on-dark, never tinted); clear it with Visa's brand team before launch or revert `public/visa-mark.svg` to `fill="#ffffff"`.
+5. Remove `robots: noindex` in `app/layout.tsx` once 1–3 clear.
+6. Resolved already: Khanna rights (Times confirmed, 2026-08-20), Visa tier (Infinite Privilege, per the supplied card back), October 2026 timing (printed in the public launch ad), source artwork (full brand kit in `collaterals/`).
 
 ## Owner-run device checks
 

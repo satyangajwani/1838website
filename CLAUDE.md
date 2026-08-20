@@ -1,6 +1,6 @@
 # 1838 Reserve teaser — agent instructions
 
-Single-screen luxury invite page for the 1838 Reserve card (TOI × ICICI × Visa Infinite Privilege). Next.js 16 App Router, static prerender + mock API Route Handlers, layered-stills stage with autonomous light. The approved launch print ad in `collaterals/print-ad/` is the art-direction ground truth — match it, don't invent.
+Single-screen luxury invite page for the 1838 Reserve card (TOI × ICICI × Visa Infinite Privilege). Next.js 16 App Router, static prerender + mock API Route Handlers, layered-stills stage with autonomous light drift and pointer/touch steering (no on-stage controls, no audio, no gyro — owner removed them; `prefers-reduced-motion` is the motion off-switch). The approved launch print ad in `collaterals/print-ad/` is the art-direction ground truth — match it, don't invent.
 
 ## Hard rules
 
@@ -14,7 +14,10 @@ Single-screen luxury invite page for the 1838 Reserve card (TOI × ICICI × Visa
 - **`collaterals/` (1.5 GB brand kit) stays out of git and deploys.** Derivatives go through `scripts/encode-assets.mjs` into `public/stage/` and get a row in `docs/asset-register.md` (`pnpm audit:assets` enforces it).
 - **Font fallback arrays: single-word family names only.** A multi-word name invalidates the entire `font-family` declaration silently (this shipped once).
 - **Custom properties used in `calc()` need units** — `0px`, never `0`.
-- **Green tests are not a visual verdict.** Screenshot desktop 1440×900 + iPhone-13 viewport after stage/layout changes; use a recording for any motion claim. The ten-viewport collision spec in `e2e/stage.spec.ts` is the geometry safety net — never weaken it to make a layout land.
+- **Green tests are not a visual verdict.** Screenshot desktop 1440×900 + iPhone viewport after stage/layout changes; use a recording for any motion claim. The ten-viewport collision spec in `e2e/stage.spec.ts` is the geometry safety net — never weaken it to make a layout land (the pedestal's off-frame bottom crop is the one sanctioned exception).
+- **Phone panels crush luminance below ~25/255.** Mac screenshots show shadow detail the owner's iPhone cannot. Measure dark regions numerically; keep object detail above ~35/255 or light it with a screen-blend wash. The owner's device is the final gate.
+- **The Visa mark is gold (`#d8b273`) by owner decision** — it knowingly overrides Visa's white-on-dark standard and is flagged AMBER in the register with sign-off on the go-live list. Do not "fix" it back to white.
+- Kill the dev/prod server by port (`lsof -ti :3000 | xargs kill`), never `pkill -f "next start"` — the real listener is `next-server` and an orphan serves stale chunks as an unstyled page.
 - The interest flow collects PAN/DOB into mocks. Nothing that makes the flow publicly reachable ships without the owner deciding it.
 
 ## Where things live

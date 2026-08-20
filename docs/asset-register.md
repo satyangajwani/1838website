@@ -16,7 +16,7 @@
 | TOI white crest and wordmark | `collaterals/logos/toi/The Times Of India_White Logo.png`; copied to `public/brands/toi-white.png` | Supplied co-brand mark | GREEN — supplied for this approved composition |
 | TOI gold crest and wordmark | Derivative of `public/brands/toi-white.png`, flat-tinted to the brand gold `#d8b273` (fill of the supplied ICICI golden logo); rendered as `public/brands/toi-gold.png` | Supplied co-brand mark, recolour within the approved palette | GREEN — matches the live site's own gold treatment |
 | ICICI Bank gold logo | `collaterals/logos/icici/Golden Logo/ICICI Bank_Gold.svg`; copied to `public/brands/icici-bank-gold.svg` | Supplied co-brand mark | GREEN — supplied for this approved composition |
-| Visa white wordmark | `public/visa-mark.svg`, retained page-level white wordmark | Visa mark supplied for project use | GREEN — page-level white treatment |
+| Visa gold wordmark | `public/visa-mark.svg`, page-level wordmark recoloured to brand gold `#d8b273` | Visa mark supplied for project use | AMBER — owner-directed gold (2026-08-20) knowingly overrides Visa's white-on-dark/no-tint standard; obtain Visa brand sign-off before launch |
 | detect-gpu benchmark data | https://github.com/pmndrs/detect-gpu/raw/master/benchmarks.tar.gz | MIT | GREEN |
 | Studio environment map | Generated locally by `scripts/build-procedural-env.mjs` after a suitable gainmap source was not available | PLACEHOLDER — generated; no third-party rights | GREEN |
 | Ambient audio (WebM / M4A) | Generated locally by `scripts/generate-audio.mjs` | PLACEHOLDER — generated; no third-party rights | GREEN |

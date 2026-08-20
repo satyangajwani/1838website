@@ -61,6 +61,13 @@ One build session, 2026-08-19 → 2026-08-20. Executed as a plan-first pipeline:
 - Owner compared against the live site: logo colours and proportions were off. TOI mark rebuilt as a flat `#d8b273` gold asset (the exact fill of the supplied ICICI golden SVG — CSS filter approximation dropped), caption in the same hex, and all three marks resized to the live site's measured proportions at 1440 (TOI 8 vw, ICICI 13.9 vw, Visa 4.5 vw) and at 402 portrait (TOI 20 vw, ICICI 33 vw), with the compact blocks scaled to match.
 - Visa mark deliberately stays white: Visa's Sept 2025 standards prohibit tinting and require white-on-dark — the live site's gold Visa is the violation this build fixed. Owner to overrule knowingly if visual parity outweighs the standard.
 
+## Phase 10 — Phone-real lighting, the ad's table, gold Visa (2026-08-20)
+
+- Owner's device check: the pedestal still read black on the phone. Measured cause: the marble rendered at ~19/255 mean luminance — visible on a colour-managed Mac, below the crush threshold of a phone panel. Phone layouts light the stone (brightness lift + warm screen-blend wash where the beam meets the slab); desktop untouched.
+- Owner: "logically it should be on the table, not in front of it." Pedestal dropped (desktop −40 %, portrait −42 %) so the card's stand rests on the slab top and the front face crops off-frame exactly as the print ad does; portrait bottom edge feathered; the collision spec now permits the deliberate off-frame crop while keeping horizontal containment.
+- Owner overruled the Phase-9 Visa position: mark recoloured to the brand gold `#d8b273` and enlarged across breakpoints. Register flag moved to AMBER — Visa brand sign-off is now a go-live item.
+- Logo audit follow-through: TOI/ICICI/caption all sample identical `#d8b273`; sizes pinned to the live site's measured render at both form factors.
+
 ## Verification state at session end
 
-79/80 browser scenarios green on Chromium + WebKit (1 skipped by design: WebKit lacks the LCP PerformanceObserver), 20 unit tests, ~266 KB critical JS against a 307 KB budget, axe-clean, asset register fully green. Remaining go-live items are business, not code: real backends, the DLT SMS template, and the private-office name.
+79/80 browser scenarios green on Chromium + WebKit (1 skipped by design: WebKit lacks the LCP PerformanceObserver), 18 unit tests (audio/controls tests removed with those features), ~266 KB critical JS against a 307 KB budget, axe-clean, asset register fully green. Remaining go-live items are business, not code: real backends, the DLT SMS template, and the private-office name.
