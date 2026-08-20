@@ -218,11 +218,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (min-width: 1024px) {
-  /* Desktop: engraved into the gold stand bar, the print ad's nameplate. */
+  /* Desktop: inlaid along the gold stand bar. The bar reads bright but sits
+     around 20 % luminance under the type, so the fill must be light, not dark. */
   .artwork-credit {
-    bottom: calc(var(--object-bottom) + 5.85rem);
-    color: rgba(46, 24, 10, .92);
-    text-shadow: 0 1px 0 rgba(255, 226, 168, .3);
+    bottom: calc(var(--object-bottom) + 5.9rem);
+    color: #fff4dc;
+    text-shadow: 0 1px 2px rgba(28, 12, 4, .85), 0 0 6px rgba(28, 12, 4, .5);
   }
 }
 
