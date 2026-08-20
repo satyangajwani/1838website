@@ -14,6 +14,7 @@
 | STIX Two Text | `collaterals/fonts/stix-two-text/STIXTwoText-VariableFont_wght.ttf`; subset to `public/fonts/stix-two-text-subset.woff2` | SIL Open Font License 1.1 | GREEN |
 | Montserrat | `collaterals/print-ad/ad-fonts/Montserrat-VariableFont_wght.ttf`; subset to `public/fonts/montserrat-subset.woff2` | SIL Open Font License 1.1 | GREEN |
 | TOI white crest and wordmark | `collaterals/logos/toi/The Times Of India_White Logo.png`; copied to `public/brands/toi-white.png` | Supplied co-brand mark | GREEN — supplied for this approved composition |
+| TOI gold crest and wordmark | Derivative of `public/brands/toi-white.png`, flat-tinted to the brand gold `#d8b273` (fill of the supplied ICICI golden logo); rendered as `public/brands/toi-gold.png` | Supplied co-brand mark, recolour within the approved palette | GREEN — matches the live site's own gold treatment |
 | ICICI Bank gold logo | `collaterals/logos/icici/Golden Logo/ICICI Bank_Gold.svg`; copied to `public/brands/icici-bank-gold.svg` | Supplied co-brand mark | GREEN — supplied for this approved composition |
 | Visa white wordmark | `public/visa-mark.svg`, retained page-level white wordmark | Visa mark supplied for project use | GREEN — page-level white treatment |
 | detect-gpu benchmark data | https://github.com/pmndrs/detect-gpu/raw/master/benchmarks.tar.gz | MIT | GREEN |

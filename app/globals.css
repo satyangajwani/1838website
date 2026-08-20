@@ -247,15 +247,13 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   align-items: flex-start;
   margin: 0;
 }
-.toi-lockup { grid-column: 1; display: grid; justify-items: center; gap: .32rem; width: clamp(8rem, 15vw, 13.5rem); }
+.toi-lockup { grid-column: 1; display: grid; justify-items: center; gap: .24rem; width: clamp(5rem, 8vw, 7.5rem); }
 .toi-lockup img {
   display: block;
   width: 100%;
   height: auto;
-  /* White source art rendered in the brand gold (matches --gold-light / ICICI gold). */
-  filter: brightness(.94) sepia(.58) saturate(1.65) hue-rotate(-9deg);
 }
-.toi-lockup span { justify-self: center; text-align: center; color: var(--gold-light); font-size: clamp(.5rem, .7vw, .68rem); font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.toi-lockup span { justify-self: center; text-align: center; white-space: nowrap; color: #d8b273; font-size: clamp(.42rem, .55vw, .56rem); font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
 .reserve-wordmark {
   grid-column: 2;
   display: grid;
@@ -269,7 +267,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 .reserve-wordmark-year { font-size: clamp(4.25rem, 7.7vw, 9.5rem); font-weight: 400; line-height: .7; letter-spacing: -.035em; }
 .reserve-wordmark-name { margin: .72rem -.52em 0 0; font-size: clamp(.68rem, 1.12vw, 1.25rem); font-weight: 500; line-height: 1; letter-spacing: .52em; text-transform: uppercase; }
-.icici-lockup { grid-column: 3; justify-self: end; display: block; width: clamp(6.5rem, 12vw, 11rem); height: auto; }
+.icici-lockup { grid-column: 3; justify-self: end; display: block; width: clamp(7rem, 13.9vw, 12.5rem); height: auto; }
 .proposition {
   grid-column: 1;
   grid-row: 2;
@@ -307,7 +305,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   justify-items: end;
   min-width: 5rem;
 }
-.visa-mark { display: block; width: clamp(4rem, 5vw, 5.5rem); height: auto; opacity: 1; filter: none; }
+.visa-mark { display: block; width: clamp(3.5rem, 4.5vw, 5rem); height: auto; opacity: 1; filter: none; }
 
 :is(.masthead, .proposition, .plaque, .marks, .interest-trigger) { opacity: 0; }
 .masthead, .proposition, .plaque, .marks, .interest-trigger { transform: translate3d(0, .65rem, 0); }
@@ -516,12 +514,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
     column-gap: .65rem;
   }
   .masthead { grid-row: 1; padding-bottom: .65rem; }
-  .toi-lockup { width: clamp(8rem, 28vw, 11rem); }
-  .toi-lockup span { font-size: clamp(.48rem, 1.7vw, .62rem); }
+  .toi-lockup { width: clamp(5.5rem, 20vw, 8rem); }
+  .toi-lockup span { font-size: clamp(.4rem, 1.45vw, .54rem); }
   .reserve-wordmark { margin-top: clamp(3.35rem, 10vw, 5.25rem); }
   .reserve-wordmark-year { font-size: clamp(3.2rem, 15vw, 6.75rem); }
   .reserve-wordmark-name { margin-top: .5rem; font-size: clamp(.52rem, 1.7vw, .88rem); letter-spacing: .5em; }
-  .icici-lockup { width: clamp(5.75rem, 23vw, 8.5rem); }
+  .icici-lockup { width: clamp(7.5rem, 33vw, 10.5rem); }
   .proposition { grid-column: 1 / -1; grid-row: 2; justify-self: center; align-self: start; width: min(92%, 31rem); margin-top: .35rem; text-align: center; font-size: clamp(1.45rem, 6.4vw, 2.75rem); }
   .plaque { grid-column: 1 / -1; grid-row: 4; justify-self: center; max-width: min(100%, 30rem); margin-top: .55rem; text-align: center; font-size: clamp(.62rem, 2.6vw, .8rem); }
   .plaque p { text-wrap: balance; }
@@ -556,9 +554,9 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-columns: 34% 1fr 31%; grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 1rem; padding-top: 0; }
   .masthead { grid-column: 1 / -1; grid-row: 1; padding-bottom: 2.25rem; }
-  .toi-lockup { width: clamp(6.75rem, 22vw, 9rem); gap: .18rem; }
-  .toi-lockup span { font-size: .43rem; }
-  .icici-lockup { width: clamp(5.4rem, 16vw, 7.5rem); }
+  .toi-lockup { width: clamp(4.5rem, 15vw, 6rem); gap: .18rem; }
+  .toi-lockup span { font-size: .4rem; }
+  .icici-lockup { width: clamp(7rem, 24vw, 10rem); }
   .proposition { grid-column: 1; grid-row: 2; align-self: center; width: 100%; font-size: clamp(1.1rem, 5dvh, 1.75rem); }
   .plaque { grid-column: 1; grid-row: 3; font-size: clamp(.55rem, 1.9dvh, .7rem); }
   .interest-trigger { grid-column: 2; grid-row: 3; padding: .7rem .9rem; font-size: .58rem; }
@@ -589,9 +587,9 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
   .masthead { padding-bottom: .45rem; }
-  .toi-lockup { width: 7.5rem; }
-  .toi-lockup span { font-size: .45rem; letter-spacing: .1em; }
-  .icici-lockup { width: 5.25rem; }
+  .toi-lockup { width: 5.25rem; }
+  .toi-lockup span { font-size: .4rem; letter-spacing: .1em; }
+  .icici-lockup { width: 7.5rem; }
   .reserve-wordmark { margin-top: 3.05rem; }
   .reserve-wordmark-year { font-size: 3rem; }
   .reserve-wordmark-name { margin-top: .42rem; font-size: .5rem; }
@@ -625,9 +623,9 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-columns: 33% 1fr 30%; column-gap: .6rem; }
   .masthead { padding-bottom: 2rem; }
-  .toi-lockup { width: 6.25rem; }
-  .toi-lockup span { font-size: .38rem; letter-spacing: .08em; }
-  .icici-lockup { width: 4.75rem; }
+  .toi-lockup { width: 4.4rem; }
+  .toi-lockup span { font-size: .36rem; letter-spacing: .08em; }
+  .icici-lockup { width: 6.6rem; }
   .proposition { font-size: clamp(1rem, 4.3dvh, 1.3rem); }
   .plaque { font-size: .5rem; line-height: 1.22; }
   .marks { font-size: .48rem; gap: .22rem; }

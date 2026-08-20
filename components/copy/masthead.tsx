@@ -1,7 +1,7 @@
 export function Masthead() {
   return <div className="masthead" aria-label="1838 Reserve partners">
     <div className="toi-lockup">
-      <img src="/brands/toi-white.png" alt="The Times of India" />
+      <img src="/brands/toi-gold.png" alt="The Times of India" />
       <span>Established in 1838</span>
     </div>
     <div className="reserve-wordmark" aria-label="1838 Reserve">

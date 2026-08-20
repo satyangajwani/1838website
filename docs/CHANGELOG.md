@@ -56,6 +56,11 @@ One build session, 2026-08-19 → 2026-08-20. Executed as a plan-first pipeline:
 - Owner direction: the Controls button broke the UI. Removed the whole controls surface — popover, pause toggle, audio ambience (`components/audio/`, `lib/audio/`), and gyroscope steering. The stage keeps the autonomous drift plus pointer/touch steering only. `prefers-reduced-motion` is now the sole motion-suppression mechanism (a deliberate WCAG 2.2.2 trade-off, owner's call).
 - Card raised on both form factors (portrait `--object-bottom` 23dvh → 27dvh, desktop 0 → 1.5rem) and the portrait wall blackout softened so the stone pedestal actually reads on a phone.
 
+## Phase 9 — Brand-lockup parity pass (2026-08-20)
+
+- Owner compared against the live site: logo colours and proportions were off. TOI mark rebuilt as a flat `#d8b273` gold asset (the exact fill of the supplied ICICI golden SVG — CSS filter approximation dropped), caption in the same hex, and all three marks resized to the live site's measured proportions at 1440 (TOI 8 vw, ICICI 13.9 vw, Visa 4.5 vw) and at 402 portrait (TOI 20 vw, ICICI 33 vw), with the compact blocks scaled to match.
+- Visa mark deliberately stays white: Visa's Sept 2025 standards prohibit tinting and require white-on-dark — the live site's gold Visa is the violation this build fixed. Owner to overrule knowingly if visual parity outweighs the standard.
+
 ## Verification state at session end
 
 79/80 browser scenarios green on Chromium + WebKit (1 skipped by design: WebKit lacks the LCP PerformanceObserver), 20 unit tests, ~266 KB critical JS against a 307 KB budget, axe-clean, asset register fully green. Remaining go-live items are business, not code: real backends, the DLT SMS template, and the private-office name.
