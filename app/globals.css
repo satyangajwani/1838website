@@ -502,12 +502,14 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 @media (max-aspect-ratio: 4 / 5) {
   .stage {
     --stage-pad: clamp(.85rem, 4vw, 1.4rem);
-    --object-width: min(94vw, 72dvh);
+    --object-width: min(98vw, 78dvh);
     --object-left: 50%;
-    --object-bottom: clamp(7rem, 18dvh, 12rem);
+    --object-bottom: clamp(8.5rem, 23dvh, 14.5rem);
+    padding-bottom: calc(var(--stage-pad) + env(safe-area-inset-bottom, 0px) + .3rem);
   }
   .stage-wall::after { background: linear-gradient(to bottom, transparent 31%, rgba(7, 2, 1, .28) 44%, rgba(3, 1, 0, .94) 70%, #030100 100%); }
   .stage-pedestal {
+    right: 0;
     -webkit-mask-image:
       linear-gradient(to bottom, transparent 0, #000 13%, #000 100%),
       linear-gradient(to right, transparent 0, #000 7%, #000 91%, transparent 100%);
@@ -546,8 +548,9 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .reserve-wordmark-name { margin-top: .5rem; font-size: clamp(.52rem, 1.7vw, .88rem); letter-spacing: .5em; }
   .icici-lockup { width: clamp(5.75rem, 23vw, 8.5rem); }
   .proposition { grid-column: 1 / -1; grid-row: 2; justify-self: center; align-self: start; width: min(92%, 31rem); margin-top: .35rem; text-align: center; font-size: clamp(1.45rem, 6.4vw, 2.75rem); }
-  .plaque { grid-column: 1 / -1; grid-row: 4; justify-self: start; max-width: 100%; font-size: clamp(.62rem, 2.6vw, .8rem); }
-  .marks { grid-column: 1 / 2; grid-row: 5; justify-self: start; justify-items: start; font-size: .61rem; }
+  .plaque { grid-column: 1 / -1; grid-row: 4; justify-self: center; max-width: min(100%, 30rem); margin-top: .55rem; text-align: center; font-size: clamp(.62rem, 2.6vw, .8rem); }
+  .plaque p { text-wrap: balance; }
+  .marks { grid-column: 1 / -1; grid-row: 5; justify-self: center; justify-items: center; margin-top: .5rem; font-size: .61rem; }
   .visa-mark { width: 3.35rem; }
   .interest-trigger { grid-column: 2 / 4; grid-row: 5; justify-self: end; padding: .82rem 1rem; font-size: .64rem; }
   .stage-controls { top: calc(var(--stage-pad) + clamp(4.65rem, 17vw, 7.5rem)); right: var(--stage-pad); left: auto; gap: .26rem; justify-items: end; }
