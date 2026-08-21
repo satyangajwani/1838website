@@ -253,7 +253,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   justify-content: space-between;
 }
-.toi-lockup { display: grid; justify-items: center; gap: .12rem; width: clamp(5rem, 8vw, 7.5rem); }
+.toi-lockup { display: grid; justify-items: center; gap: .12rem; width: clamp(6.25rem, 10vw, 9.4rem); }
 .toi-lockup img {
   display: block;
   width: 100%;
@@ -530,7 +530,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
     column-gap: .65rem;
   }
   .masthead { grid-row: 1; padding-bottom: .65rem; }
-  .toi-lockup { width: clamp(5.5rem, 20vw, 8rem); }
+  .toi-lockup { width: clamp(6.9rem, 25vw, 10rem); }
   .toi-lockup span { font-size: clamp(.4rem, 1.45vw, .54rem); }
   .reserve-wordmark { margin-top: clamp(.35rem, 1.6vw, .8rem); }
   .reserve-wordmark-year { font-size: clamp(3.2rem, 15vw, 6.75rem); }
@@ -570,7 +570,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-columns: 34% 1fr 31%; grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 1rem; padding-top: 0; }
   .masthead { grid-column: 1 / -1; grid-row: 1; padding-bottom: 2.25rem; }
-  .toi-lockup { width: clamp(4.5rem, 15vw, 6rem); gap: .1rem; }
+  .toi-lockup { width: clamp(5.6rem, 18.75vw, 7.5rem); gap: .1rem; }
   .toi-lockup span { font-size: .4rem; }
   .icici-lockup { width: clamp(7rem, 24vw, 10rem); }
   .proposition { grid-column: 1; grid-row: 2; align-self: center; width: 100%; font-size: clamp(1.1rem, 5dvh, 1.75rem); }
@@ -603,7 +603,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
   .masthead { padding-bottom: .45rem; }
-  .toi-lockup { width: 5.25rem; }
+  .toi-lockup { width: 6.55rem; }
   .toi-lockup span { font-size: .4rem; letter-spacing: .1em; }
   .icici-lockup { width: 7.5rem; }
   .reserve-wordmark { margin-top: .3rem; }
@@ -640,7 +640,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .stage-copy { grid-template-columns: 33% 1fr 30%; column-gap: .6rem; }
   .masthead { padding-bottom: 2rem; }
-  .toi-lockup { width: 4.4rem; }
+  .toi-lockup { width: 5.5rem; }
   .toi-lockup span { font-size: .36rem; letter-spacing: .08em; }
   .icici-lockup { width: 6.6rem; }
   .proposition { font-size: clamp(1rem, 4.3dvh, 1.3rem); }
